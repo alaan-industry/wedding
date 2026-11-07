@@ -15,6 +15,19 @@ export default defineConfig({
                 bunny('Instrument Sans', {
                     weights: [400, 500, 600],
                 }),
+                bunny('Cormorant Garamond', {
+                    weights: [300, 400, 500, 600],
+                    styles: ['normal', 'italic'],
+                }),
+                bunny('Marcellus', {
+                    weights: [400],
+                }),
+                bunny('Montserrat', {
+                    weights: [400, 500, 600],
+                }),
+                bunny('Pinyon Script', {
+                    weights: [400],
+                }),
             ],
         }),
         tailwindcss(),
