@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Marcellus&family=Montserrat:wght@500;600&family=Pinyon+Script&display=block" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #fff; }
+    .card {
+        width: 1200px; height: 630px; overflow: hidden; zoom: 0.75;
+        background:
+            radial-gradient(ellipse at 50% 45%, #fbf8f2 0%, #f5efe4 70%, #ebe3d4 100%);
+        color: #3a4136;
+        font-family: 'Cormorant Garamond', serif;
+        position: relative;
+    }
+    .frame {
+        position: absolute; inset: 28px;
+        border: 1.5px solid #c9b18a;
+    }
+    .frame::after {
+        content: ''; position: absolute; inset: 8px;
+        border: 1px solid rgba(201, 177, 138, .55);
+    }
+    .sprig { position: absolute; width: 230px; height: 230px; }
+    .sprig.tl { top: -14px; left: -14px; }
+    .sprig.br { bottom: -14px; right: -14px; transform: rotate(180deg); }
+    .content {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        text-align: center;
+    }
+    .eyebrow {
+        font-family: 'Montserrat', sans-serif; font-weight: 600;
+        font-size: 17px; letter-spacing: .42em; text-transform: uppercase;
+        color: #6f7d62; margin-bottom: 6px;
+    }
+    .names {
+        font-family: 'Pinyon Script', cursive;
+        font-size: 104px; line-height: 1.15; color: #3f4a3a;
+        display: flex; align-items: baseline; gap: 22px;
+    }
+    .names .amp { font-size: 76px; color: #a8776b; }
+    .divider { display: flex; align-items: center; gap: 18px; margin: 14px 0 22px; }
+    .divider span { width: 120px; height: 1px; background: #c9b18a; }
+    .divider i { width: 9px; height: 9px; background: #c9b18a; transform: rotate(45deg); }
+    .date {
+        font-family: 'Marcellus', serif;
+        font-size: 40px; letter-spacing: .22em; color: #3a4136;
+    }
+    .place {
+        font-style: italic; font-size: 30px; color: #6d7166; margin-top: 10px;
+    }
+    .hashtag {
+        font-family: 'Montserrat', sans-serif; font-weight: 500;
+        font-size: 16px; letter-spacing: .2em; color: #a8776b; margin-top: 26px;
+    }
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="frame"></div>
+
+    <svg class="sprig tl" viewBox="0 0 300 300" fill="none">
+        <path d="M30 40 C 110 70, 170 120, 230 230" stroke="#6f7d62" stroke-width="2.2" stroke-linecap="round"/>
+        <g fill="#9aa88a">
+            <ellipse cx="70" cy="58" rx="22" ry="9" transform="rotate(-20 70 58)"/>
+            <ellipse cx="62" cy="80" rx="22" ry="9" transform="rotate(55 62 80)"/>
+            <ellipse cx="112" cy="82" rx="24" ry="10" transform="rotate(-10 112 82)"/>
+            <ellipse cx="100" cy="108" rx="24" ry="10" transform="rotate(60 100 108)"/>
+            <ellipse cx="152" cy="118" rx="24" ry="10" transform="rotate(5 152 118)"/>
+            <ellipse cx="136" cy="144" rx="24" ry="10" transform="rotate(70 136 144)"/>
+            <ellipse cx="186" cy="162" rx="22" ry="9" transform="rotate(20 186 162)"/>
+            <ellipse cx="168" cy="186" rx="22" ry="9" transform="rotate(80 168 186)"/>
+        </g>
+        <g fill="#dcb7ab">
+            <circle cx="40" cy="44" r="14"/>
+            <circle cx="216" cy="206" r="10"/>
+        </g>
+        <g fill="#a8776b" opacity=".7">
+            <circle cx="40" cy="44" r="5"/>
+            <circle cx="216" cy="206" r="4"/>
+        </g>
+    </svg>
+    <svg class="sprig br" viewBox="0 0 300 300" fill="none">
+        <path d="M30 40 C 110 70, 170 120, 230 230" stroke="#6f7d62" stroke-width="2.2" stroke-linecap="round"/>
+        <g fill="#9aa88a">
+            <ellipse cx="70" cy="58" rx="22" ry="9" transform="rotate(-20 70 58)"/>
+            <ellipse cx="62" cy="80" rx="22" ry="9" transform="rotate(55 62 80)"/>
+            <ellipse cx="112" cy="82" rx="24" ry="10" transform="rotate(-10 112 82)"/>
+            <ellipse cx="100" cy="108" rx="24" ry="10" transform="rotate(60 100 108)"/>
+            <ellipse cx="152" cy="118" rx="24" ry="10" transform="rotate(5 152 118)"/>
+            <ellipse cx="136" cy="144" rx="24" ry="10" transform="rotate(70 136 144)"/>
+            <ellipse cx="186" cy="162" rx="22" ry="9" transform="rotate(20 186 162)"/>
+            <ellipse cx="168" cy="186" rx="22" ry="9" transform="rotate(80 168 186)"/>
+        </g>
+        <g fill="#dcb7ab">
+            <circle cx="40" cy="44" r="14"/>
+            <circle cx="216" cy="206" r="10"/>
+        </g>
+        <g fill="#a8776b" opacity=".7">
+            <circle cx="40" cy="44" r="5"/>
+            <circle cx="216" cy="206" r="4"/>
+        </g>
+    </svg>
+
+    <div class="content">
+        <p class="eyebrow">We're getting married</p>
+        <h1 class="names"><span>Benjie</span><span class="amp">&amp;</span><span>Monaliza</span></h1>
+        <div class="divider"><span></span><i></i><span></span></div>
+        <p class="date">JANUARY 30, 2027</p>
+        <p class="place">Panabo City, Davao del Norte</p>
+        <p class="hashtag">#BenjieAndMonalizaMerged</p>
+    </div>
+</div>
+</body>
+</html>
