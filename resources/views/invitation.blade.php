@@ -54,7 +54,7 @@
             aria-label="Open the invitation"
         >
             {{-- Back of the envelope --}}
-            <span class="absolute inset-0 rounded-md bg-linen shadow-[0_30px_60px_-25px_rgb(58_65_54/0.45)]"></span>
+            <span class="absolute inset-0 rounded-md bg-linen shadow-[0_30px_60px_-25px_rgb(51_64_79/0.45)]"></span>
 
             {{-- The letter inside --}}
             <span class="envelope-letter absolute inset-x-[6%] top-[6%] bottom-[6%] flex flex-col items-center justify-center rounded-sm border border-moss-light/70 bg-ivory px-4 text-center" :class="open ? 'z-20' : 'z-10'">
@@ -86,7 +86,7 @@
         x-init="scrolled = window.scrollY > 40"
         @scroll.window="scrolled = window.scrollY > 40"
         class="fixed inset-x-0 top-0 z-40 transition duration-500"
-        :class="scrolled ? 'bg-ivory/90 shadow-[0_10px_30px_-20px_rgb(58_65_54/0.35)] backdrop-blur-md' : 'bg-transparent'"
+        :class="scrolled ? 'bg-ivory/90 shadow-[0_10px_30px_-20px_rgb(51_64_79/0.35)] backdrop-blur-md' : 'bg-transparent'"
     >
         <nav class="mx-auto flex max-w-6xl items-center justify-between gap-10 px-6 py-3 font-sans text-[0.7rem] tracking-[0.12em] text-ink-soft md:grid md:grid-cols-[1fr_auto_1fr]">
             <div class="hidden items-center justify-end gap-8 md:flex">
@@ -117,7 +117,7 @@
             type="button"
             x-data="music(@js($musicUrl))"
             @click="toggle()"
-            class="fixed right-4 bottom-4 z-40 flex size-12 cursor-pointer items-center justify-center rounded-full border border-moss/30 bg-ivory/90 text-moss-dark shadow-[0_10px_30px_-12px_rgb(58_65_54/0.5)] backdrop-blur-md transition hover:scale-105 sm:right-6 sm:bottom-6"
+            class="fixed right-4 bottom-4 z-40 flex size-12 cursor-pointer items-center justify-center rounded-full border border-moss/30 bg-ivory/90 text-moss-dark shadow-[0_10px_30px_-12px_rgb(51_64_79/0.5)] backdrop-blur-md transition hover:scale-105 sm:right-6 sm:bottom-6"
             :aria-pressed="playing.toString()"
             :aria-label="(playing ? 'Pause ' : 'Play ') + @js(config('wedding.music.title'))"
             data-test="music-toggle"
@@ -149,7 +149,7 @@
                         data-test="bird"
                     >
                         <span x-ref="pose" class="block">
-                            <x-wedding.bird class="w-20 drop-shadow-[0_6px_8px_rgb(58_65_54/0.2)] sm:w-28" />
+                            <x-wedding.bird class="w-20 drop-shadow-[0_6px_8px_rgb(51_64_79/0.2)] sm:w-28" />
                         </span>
                     </button>
                 </div>
@@ -158,7 +158,7 @@
                     <span class="absolute" :style="`left: ${burst.x}px; top: ${burst.y}px`">
                         @foreach (range(0, 9) as $particle)
                             <span class="bird-particle absolute" style="--angle: {{ $particle * 36 + ($particle % 2) * 12 }}deg; --distance: {{ 44 + ($particle % 3) * 18 }}px;">
-                                <svg viewBox="0 0 20 18" class="{{ $particle % 2 ? 'w-2.5' : 'w-3.5' }}" aria-hidden="true"><path d="M10 17C4 12 0 9 0 5A5 5 0 0 1 10 3a5 5 0 0 1 10 2c0 4-4 7-10 12Z" fill="{{ $particle % 3 ? '#dcb7ab' : '#6f7d62' }}" /></svg>
+                                <svg viewBox="0 0 20 18" class="{{ $particle % 2 ? 'w-2.5' : 'w-3.5' }}" aria-hidden="true"><path d="M10 17C4 12 0 9 0 5A5 5 0 0 1 10 3a5 5 0 0 1 10 2c0 4-4 7-10 12Z" fill="{{ $particle % 3 ? '#dcb7ab' : '#6b84a0' }}" /></svg>
                             </span>
                         @endforeach
                     </span>
@@ -170,7 +170,7 @@
                             <button
                                 type="button"
                                 @click="note = null"
-                                class="dove-note absolute z-30 w-64 cursor-pointer border border-gold/60 bg-ivory/95 px-5 py-4 text-left shadow-[0_20px_40px_-20px_rgb(58_65_54/0.45)] backdrop-blur-sm"
+                                class="dove-note absolute z-30 w-64 cursor-pointer border border-gold/60 bg-ivory/95 px-5 py-4 text-left shadow-[0_20px_40px_-20px_rgb(51_64_79/0.45)] backdrop-blur-sm"
                                 :style="`left: ${note.x}px; top: ${note.y}px`"
                                 data-test="dove-note"
                             >
@@ -210,7 +210,7 @@
                         </span>
                     </div>
 
-                    <p class="mt-3 text-lg italic text-ink-soft">{{ config('wedding.ceremony.name') }} · Panabo City, Davao del Norte</p>
+                    <p class="mt-3 text-lg italic text-ink-soft">{{ config('wedding.ceremony.name') }} · San Vicente, Panabo City</p>
 
                     @if ($invitation)
                         <p class="mt-5 font-sans text-[0.7rem] uppercase tracking-[0.3em] text-moss" data-test="reserved-seats">
@@ -219,7 +219,7 @@
                     @endif
 
                     <div class="mt-9 flex flex-wrap items-center justify-center gap-6 lg:justify-start">
-                        <a href="#rsvp" class="bg-moss-dark px-7 py-3.5 font-sans text-[0.7rem] uppercase tracking-[0.25em] text-ivory shadow-[0_12px_25px_-12px_rgb(58_65_54/0.6)] transition hover:-translate-y-0.5 hover:bg-ink">
+                        <a href="#rsvp" class="bg-moss-dark px-7 py-3.5 font-sans text-[0.7rem] uppercase tracking-[0.25em] text-ivory shadow-[0_12px_25px_-12px_rgb(51_64_79/0.6)] transition hover:-translate-y-0.5 hover:bg-ink">
                             RSVP by {{ $wedding->rsvpDeadline()->format('F j') }}
                         </a>
                         <a href="#story" class="group inline-flex items-center gap-2 font-sans text-[0.7rem] uppercase tracking-[0.25em] text-moss-dark">
@@ -232,7 +232,7 @@
                 <div class="relative grid grid-cols-3 items-start gap-3 sm:gap-4">
                     @foreach ($heroPanels as $index => $panel)
                         <figure
-                            class="reveal photo-frame aspect-[3/5] bg-linen shadow-[0_25px_50px_-30px_rgb(58_65_54/0.6)] {{ $panel['offset'] }}"
+                            class="reveal photo-frame aspect-[3/5] bg-linen shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)] {{ $panel['offset'] }}"
                             style="transition-delay: {{ 150 + $index * 150 }}ms"
                             x-data
                             x-intersect.once="$el.classList.add('is-visible')"
@@ -240,10 +240,10 @@
                             @if ($photos[$index] ?? null)
                                 <img src="{{ $photos[$index] }}" alt="{{ $wedding->coupleNames() }}" class="size-full object-cover" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" />
                             @else
-                                <div class="flex size-full flex-col items-center justify-center bg-gradient-to-b px-4 text-center {{ $panel['tone'] }}" data-test="photo-placeholder">
-                                    <x-wedding.sprig class="h-24 w-9 text-moss/40 sm:h-32 sm:w-12" filled />
-                                    <span class="mt-4 font-sans text-[0.5rem] uppercase tracking-[0.3em] text-blush-dark sm:text-[0.55rem]">{{ $panel['eyebrow'] }}</span>
-                                    <span class="mt-2 {{ ($panel['script'] ?? false) ? 'font-script text-2xl sm:text-4xl' : 'font-display text-[0.7rem] sm:text-lg' }} leading-tight text-moss-dark">{{ $panel['title'] }}</span>
+                                <div class="flex size-full flex-col items-center justify-center bg-gradient-to-b px-3 text-center sm:px-4 {{ $panel['tone'] }}" data-test="photo-placeholder">
+                                    <x-wedding.sprig class="h-14 w-5 text-moss/40 sm:h-32 sm:w-12" filled />
+                                    <span class="mt-2 font-sans text-[0.5rem] uppercase tracking-[0.2em] text-blush-dark sm:mt-4 sm:text-[0.55rem] sm:tracking-[0.3em]">{{ $panel['eyebrow'] }}</span>
+                                    <span class="mt-1 sm:mt-2 {{ ($panel['script'] ?? false) ? 'font-script text-xl whitespace-nowrap sm:text-4xl' : 'font-display text-[0.7rem] sm:text-lg' }} leading-tight text-moss-dark">{{ $panel['title'] }}</span>
                                 </div>
                             @endif
                         </figure>
@@ -301,15 +301,15 @@
                             },
                         }"
                         x-init="tick(); setInterval(() => tick(), 1000)"
-                        class="mt-8 flex items-center justify-center gap-3 sm:gap-6 md:justify-start"
+                        class="mt-8 flex items-center justify-center gap-1.5 sm:gap-6 md:justify-start"
                     >
                         @foreach (['days' => 'Days', 'hours' => 'Hours', 'minutes' => 'Minutes', 'seconds' => 'Seconds'] as $unit => $label)
                             @unless ($loop->first)
-                                <x-wedding.sprig class="h-12 w-4 shrink-0 {{ $loop->even ? 'rotate-12' : '-rotate-12' }} text-sage sm:h-16 sm:w-6" filled />
+                                <x-wedding.sprig class="h-10 w-3 shrink-0 {{ $loop->even ? 'rotate-12' : '-rotate-12' }} text-sage sm:h-16 sm:w-6" filled />
                             @endunless
-                            <div class="flex min-w-14 flex-col items-center sm:min-w-16">
-                                <span class="font-display text-4xl lining-nums tabular-nums text-blush-dark sm:text-5xl" x-text="String(parts.{{ $unit }}).padStart(2, '0')">00</span>
-                                <span class="mt-2 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-ink-soft">{{ $label }}</span>
+                            <div class="flex min-w-12 flex-col items-center sm:min-w-16">
+                                <span class="font-display text-3xl lining-nums tabular-nums text-blush-dark sm:text-5xl" x-text="String(parts.{{ $unit }}).padStart(2, '0')">00</span>
+                                <span class="mt-2 font-sans text-[0.55rem] uppercase tracking-[0.12em] text-ink-soft sm:text-[0.6rem] sm:tracking-[0.2em]">{{ $label }}</span>
                             </div>
                         @endforeach
                     </div>
@@ -331,7 +331,7 @@
             </x-wedding.section-heading>
 
             <div class="mx-auto mt-16 grid max-w-4xl gap-8 md:grid-cols-2">
-                <figure class="reveal flex flex-col overflow-hidden bg-[#2f372c] shadow-[0_30px_60px_-30px_rgb(58_65_54/0.7)]" x-data x-intersect.once="$el.classList.add('is-visible')">
+                <figure class="reveal flex flex-col overflow-hidden bg-[#2b3746] shadow-[0_30px_60px_-30px_rgb(51_64_79/0.7)]" x-data x-intersect.once="$el.classList.add('is-visible')">
                     <div class="flex items-center gap-1.5 border-b border-white/10 px-4 py-3">
                         <span class="size-2.5 rounded-full bg-blush/70"></span>
                         <span class="size-2.5 rounded-full bg-moss-light/70"></span>
@@ -347,7 +347,7 @@
                     <figcaption class="border-t border-white/10 px-5 py-4 font-sans text-[0.65rem] uppercase tracking-[0.3em] text-ivory/50">From the groom · Programmer</figcaption>
                 </figure>
 
-                <figure class="reveal relative flex flex-col border border-gold/60 bg-ivory p-8 shadow-[0_30px_60px_-30px_rgb(58_65_54/0.45)] [transition-delay:150ms]" x-data x-intersect.once="$el.classList.add('is-visible')">
+                <figure class="reveal relative flex flex-col border border-gold/60 bg-ivory p-8 shadow-[0_30px_60px_-30px_rgb(51_64_79/0.45)] [transition-delay:150ms]" x-data x-intersect.once="$el.classList.add('is-visible')">
                     <p class="font-sans text-[0.6rem] uppercase tracking-[0.35em] text-blush-dark">Office of the Heart · Memorandum</p>
                     <p class="mt-4 font-display text-2xl text-moss-dark">Notice of Lifetime Appointment</p>
 
@@ -377,7 +377,7 @@
                     ['label' => 'The Ceremony', 'icon' => 'heart', 'venue' => config('wedding.ceremony'), 'time' => $ceremonyStartsAt],
                     ['label' => 'The Reception', 'icon' => 'sparkles', 'venue' => config('wedding.reception'), 'time' => $receptionStartsAt],
                 ] as $event)
-                    <article class="reveal relative flex flex-col items-center bg-ivory px-8 py-14 text-center shadow-[0_25px_50px_-30px_rgb(58_65_54/0.45)]" x-data x-intersect.once="$el.classList.add('is-visible')">
+                    <article class="reveal relative flex flex-col items-center bg-ivory px-8 py-14 text-center shadow-[0_25px_50px_-30px_rgb(51_64_79/0.45)]" x-data x-intersect.once="$el.classList.add('is-visible')">
                         <span class="pointer-events-none absolute inset-3 border border-gold/50"></span>
                         <x-wedding.posy class="pointer-events-none absolute -top-5 -right-5 w-20 text-blush-dark/70" />
                         <span class="flex size-14 items-center justify-center rounded-full bg-moss-light/60 text-moss-dark">
@@ -471,7 +471,7 @@
                 @if ($invitation)
                     <livewire:rsvp :invitation="$invitation" />
                 @else
-                    <div class="relative border border-gold/60 bg-ivory px-6 py-10 text-center shadow-[0_30px_70px_-35px_rgb(58_65_54/0.45)] sm:px-12 sm:py-14" data-test="personal-link-note">
+                    <div class="relative border border-gold/60 bg-ivory px-6 py-10 text-center shadow-[0_30px_70px_-35px_rgb(51_64_79/0.45)] sm:px-12 sm:py-14" data-test="personal-link-note">
                         <div class="pointer-events-none absolute inset-2 border border-gold/30"></div>
 
                         <div class="relative">

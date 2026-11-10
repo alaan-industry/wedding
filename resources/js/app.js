@@ -2,7 +2,7 @@ const random = (min, max) => min + Math.random() * (max - min);
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const palette = ['#6f7d62', '#dfe4d4', '#dcb7ab', '#c9b18a', '#fbf8f2'];
+const palette = ['#6b84a0', '#dbe4ee', '#dcb7ab', '#c9b18a', '#fbf8f2'];
 
 const heartShape = new Path2D('M10 17C4 12 0 9 0 5A5 5 0 0 1 10 3a5 5 0 0 1 10 2c0 4-4 7-10 12Z');
 
@@ -110,7 +110,7 @@ function dropPetals(x, y) {
  * Hearts raining down the whole screen, unlocked by the easter eggs.
  */
 function rainHearts() {
-    const colors = ['#dcb7ab', '#c48f84', '#6f7d62', '#c9b18a'];
+    const colors = ['#dcb7ab', '#c48f84', '#6b84a0', '#c9b18a'];
 
     playParticles(Array.from({ length: 80 }, () => ({
         shape: 'heart',
@@ -396,7 +396,7 @@ window.merge = () => {
 
 console.log(
     '%cHey there, fellow developer! 👋%c\n\nThis invitation was hand-built by the groom.\nRun merge() here, or try ↑ ↑ ↓ ↓ ← → ← → B A on the page.',
-    'font: 600 16px Georgia, serif; color: #3f4a3a',
+    'font: 600 16px Georgia, serif; color: #3d4e63',
     'font: 13px ui-monospace, monospace; color: #6d7166',
 );
 

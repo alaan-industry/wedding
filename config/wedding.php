@@ -80,7 +80,7 @@ return [
 
     'dress_code' => [
         'title' => 'Formal Attire',
-        'description' => 'Gentlemen in barong or suit, ladies in long dresses or elegant gowns. We would love to see you in our wedding palette.',
+        'description' => 'Come dressed in your formal best — a suit, barong, polo with slacks, cocktail dress, or anything that feels elegant to you. We would love to see you in our wedding palette.',
         'palette' => [
             ['name' => 'Champagne', 'hex' => '#E8D9B5'],
             ['name' => 'Dark Blue', 'hex' => '#1B3A4B'],
