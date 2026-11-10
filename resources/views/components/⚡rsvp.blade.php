@@ -233,7 +233,7 @@ new class extends Component
     $wedding = app(\App\Support\Wedding::class);
 @endphp
 
-<div class="relative border border-gold/60 bg-ivory px-6 py-10 shadow-[0_30px_70px_-35px_rgb(58_65_54/0.45)] sm:px-12 sm:py-14">
+<div class="relative border border-gold/60 bg-ivory px-6 py-10 shadow-[0_30px_70px_-35px_rgb(51_64_79/0.45)] sm:px-12 sm:py-14">
     <div class="pointer-events-none absolute inset-2 border border-gold/30"></div>
 
     @if ($step === 'choice')
@@ -325,7 +325,7 @@ new class extends Component
             @endif
 
             <label class="flex cursor-pointer items-center gap-3 text-ink-soft">
-                <input type="checkbox" wire:model="shareMessage" class="size-4 rounded-sm border-moss/50 text-moss accent-[#3f4a3a] focus:ring-moss" />
+                <input type="checkbox" wire:model="shareMessage" class="size-4 rounded-sm border-moss/50 text-moss accent-[#3d4e63] focus:ring-moss" />
                 <span>Share my wish on the wall of wishes</span>
             </label>
 

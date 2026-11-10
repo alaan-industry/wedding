@@ -157,7 +157,7 @@ new class extends Component
 
 <div>
     @if ($acceptsWishes)
-        <div class="relative mx-auto mb-14 max-w-xl border border-gold/60 bg-ivory px-6 py-10 shadow-[0_30px_70px_-35px_rgb(58_65_54/0.45)] sm:px-12">
+        <div class="relative mx-auto mb-14 max-w-xl border border-gold/60 bg-ivory px-6 py-10 shadow-[0_30px_70px_-35px_rgb(51_64_79/0.45)] sm:px-12">
             <div class="pointer-events-none absolute inset-2 border border-gold/30"></div>
 
             @if ($wishSent)
@@ -199,7 +199,7 @@ new class extends Component
             @foreach ($this->wishes as $wish)
                 @php($isHearted = in_array($wish->id, $this->heartedWishIds, true))
 
-                <figure wire:key="wish-{{ $wish->id }}" class="mb-6 break-inside-avoid border border-gold/50 bg-ivory px-6 py-7 shadow-[0_15px_40px_-30px_rgb(58_65_54/0.5)]">
+                <figure wire:key="wish-{{ $wish->id }}" class="mb-6 break-inside-avoid border border-gold/50 bg-ivory px-6 py-7 shadow-[0_15px_40px_-30px_rgb(51_64_79/0.5)]">
                     <span class="font-display text-5xl leading-none text-blush">&ldquo;</span>
                     <blockquote class="-mt-4 text-lg leading-relaxed text-ink">{{ $wish->message }}</blockquote>
                     <div class="mt-4 flex items-center justify-between gap-4">
