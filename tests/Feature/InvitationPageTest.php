@@ -131,6 +131,37 @@ test('heroShowsOnlyThePhotosThatWereAdded', function () {
         ->assertSee('data-test="photo-placeholder"', false);
 });
 
+test('ourAdventuresCarouselShowsOnlyThePhotosThatWereAdded', function () {
+    config(['wedding.adventures' => [
+        ['path' => 'robots.txt', 'taken_on' => '2020-01-09', 'caption' => 'Bali'],
+        ['path' => 'images/missing-adventure.jpg', 'taken_on' => '2023-11-24', 'caption' => null],
+        ['path' => 'favicon.ico', 'taken_on' => null, 'caption' => 'Undated'],
+        ['path' => 'favicon.svg', 'taken_on' => '2018-08-05', 'caption' => 'Siargao'],
+    ]]);
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertSee('data-test="our-adventures"', false)
+        ->assertSeeInOrder(['2018 — today', 'Siargao', 'Bali'])
+        ->assertDontSee('Undated')
+        ->assertSee('robots.txt', false)
+        ->assertSee('January 2020')
+        ->assertSee('Bali')
+        ->assertDontSee('missing-adventure.jpg', false)
+        ->assertDontSee('November 2023');
+});
+
+test('ourAdventuresSectionIsHiddenUntilAPhotoIsAdded', function () {
+    config(['wedding.adventures' => [
+        ['path' => 'images/missing-adventure.jpg', 'taken_on' => '2023-11-24', 'caption' => null],
+    ]]);
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertDontSee('data-test="our-adventures"', false)
+        ->assertDontSee('href="#adventures"', false);
+});
+
 test('unknownInvitationCodeReturnsNotFound', function () {
     $this->get(route('invitation.show', 'not-a-code'))->assertNotFound();
 });

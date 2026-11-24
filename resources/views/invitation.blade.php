@@ -4,6 +4,7 @@
     $ceremonyStartsAt = $wedding->ceremonyStartsAt();
     $receptionStartsAt = $wedding->receptionStartsAt();
     $photos = $wedding->photoUrls();
+    $adventurePhotos = $wedding->adventurePhotos();
 
     $heroPanels = [
         ['eyebrow' => 'Save the date', 'title' => $ceremonyStartsAt->format('m · d · Y'), 'tone' => 'from-moss-light via-paper to-linen', 'offset' => 'mt-12'],
@@ -91,6 +92,9 @@
         <nav class="mx-auto flex max-w-6xl items-center justify-between gap-10 px-6 py-3 font-sans text-[0.7rem] tracking-[0.12em] text-ink-soft md:grid md:grid-cols-[1fr_auto_1fr]">
             <div class="hidden items-center justify-end gap-8 md:flex">
                 <a href="#story" class="transition hover:text-blush-dark">Our Story</a>
+                @if (count($adventurePhotos))
+                    <a href="#adventures" class="transition hover:text-blush-dark">Our Adventures</a>
+                @endif
                 <a href="#details" class="transition hover:text-blush-dark">Details</a>
                 <a href="#schedule" class="transition hover:text-blush-dark">Schedule</a>
             </div>
@@ -367,6 +371,148 @@
                 </figure>
             </div>
         </section>
+
+        {{-- Our adventures --}}
+        @if (count($adventurePhotos))
+            <section id="adventures" class="scroll-mt-16 overflow-hidden bg-linen/40 py-24 sm:py-32" data-test="our-adventures">
+                <x-wedding.section-heading class="px-6" :eyebrow="$adventurePhotos[0]['taken_on']->format('Y').' — today'" title="Our Adventures">
+                    Islands, temples, sunrises and a lot of selfies. Every trip brought us a little closer to this one.
+                </x-wedding.section-heading>
+
+                <div
+                    x-data="{
+                        current: 0,
+                        total: {{ count($adventurePhotos) }},
+                        startX: null,
+                        swiped: false,
+                        loaded: Array.from({ length: {{ count($adventurePhotos) }} }, (_, index) => index <= 2 || index >= {{ count($adventurePhotos) - 2 }}),
+                        offset(index) {
+                            let distance = (index - this.current) % this.total;
+                            if (distance > this.total / 2) distance -= this.total;
+                            if (distance < -this.total / 2) distance += this.total;
+
+                            return distance;
+                        },
+                        slideStyle(index) {
+                            const distance = this.offset(index);
+                            const steps = { 0: [0, 1, 1, 30], 1: [78, 0.8, 0.85, 20], 2: [145, 0.64, 0.5, 10] };
+                            const [shift, scale, opacity, layer] = steps[Math.abs(distance)] ?? [200, 0.5, 0, 0];
+
+                            return {
+                                transform: `translateX(${Math.sign(distance) * shift}%) scale(${scale})`,
+                                opacity,
+                                zIndex: layer,
+                                pointerEvents: opacity === 0 ? 'none' : 'auto',
+                            };
+                        },
+                        go(index) {
+                            this.current = ((index % this.total) + this.total) % this.total;
+
+                            for (let step = -2; step <= 2; step++) {
+                                this.loaded[(this.current + step + this.total) % this.total] = true;
+                            }
+                        },
+                        next() { this.go(this.current + 1) },
+                        prev() { this.go(this.current - 1) },
+                        startSwipe(event) {
+                            this.startX = event.clientX;
+                            this.swiped = false;
+                        },
+                        endSwipe(event) {
+                            if (this.startX === null) return;
+                            const distance = event.clientX - this.startX;
+                            this.startX = null;
+
+                            if (Math.abs(distance) > 40) {
+                                this.swiped = true;
+                                distance < 0 ? this.next() : this.prev();
+                            }
+                        },
+                    }"
+                    class="reveal relative mt-14 px-6 focus:outline-none"
+                    x-intersect.once="$el.classList.add('is-visible')"
+                    @keydown.arrow-right.prevent="next()"
+                    @keydown.arrow-left.prevent="prev()"
+                    tabindex="0"
+                    role="region"
+                    aria-roledescription="carousel"
+                    aria-label="Photos of our adventures together"
+                >
+                    <ol
+                        class="relative mx-auto aspect-[4/5] w-[62%] touch-pan-y select-none sm:w-[38%] lg:w-[26%]"
+                        @pointerdown="$el.setPointerCapture($event.pointerId); startSwipe($event)"
+                        @pointerup="endSwipe($event)"
+                        @pointercancel="startX = null"
+                    >
+                        @foreach ($adventurePhotos as $photo)
+                            <li
+                                class="absolute inset-0 origin-center transition-[transform,opacity] duration-600 ease-out"
+                                style="{{ $loop->first ? '' : 'opacity: 0;' }}"
+                                :style="slideStyle({{ $loop->index }})"
+                                :class="offset({{ $loop->index }}) !== 0 && 'cursor-pointer'"
+                                :aria-hidden="(offset({{ $loop->index }}) !== 0).toString()"
+                                @click="if (! swiped && offset({{ $loop->index }}) !== 0) go({{ $loop->index }})"
+                                aria-roledescription="slide"
+                                aria-label="{{ $loop->iteration }} of {{ $loop->count }}"
+                            >
+                                <div
+                                    class="photo-frame size-full bg-linen transition-shadow duration-500"
+                                    :class="offset({{ $loop->index }}) === 0 ? 'shadow-[0_30px_60px_-25px_rgb(51_64_79/0.7)]' : 'shadow-[0_15px_30px_-20px_rgb(51_64_79/0.4)]'"
+                                >
+                                    <img
+                                        @if ($loop->index <= 2 || $loop->index >= $loop->count - 2) src="{{ $photo['url'] }}" @endif
+                                        :src="loaded[{{ $loop->index }}] ? @js($photo['url']) : null"
+                                        alt="{{ $wedding->coupleNames() }}, {{ $photo['caption'] ? $photo['caption'].', ' : '' }}{{ $photo['taken_on']->format('F Y') }}"
+                                        class="pointer-events-none size-full object-cover"
+                                        decoding="async"
+                                        draggable="false"
+                                    />
+                                </div>
+                            </li>
+                        @endforeach
+                    </ol>
+
+                    <div class="mt-8 grid min-h-12 text-center">
+                        @foreach ($adventurePhotos as $photo)
+                            <div class="[grid-area:1/1]" x-show="current === {{ $loop->index }}" @unless ($loop->first) x-cloak @endunless x-transition.opacity.duration.400ms>
+                                <p class="font-sans text-[0.65rem] uppercase tracking-[0.3em] text-blush-dark">{{ $photo['taken_on']->format('F Y') }}</p>
+                                @if ($photo['caption'])
+                                    <p class="mt-1 font-display text-xl text-moss-dark">{{ $photo['caption'] }}</p>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-center gap-6">
+                        <button
+                            type="button"
+                            @click="prev()"
+                            class="flex size-11 cursor-pointer items-center justify-center rounded-full border border-moss/30 bg-ivory text-moss-dark transition hover:bg-moss-dark hover:text-ivory"
+                            aria-label="Previous photo"
+                        >
+                            <flux:icon.chevron-left variant="micro" />
+                        </button>
+
+                        <p class="min-w-20 text-center font-sans text-xs tabular-nums tracking-[0.25em] text-ink-soft" aria-live="polite">
+                            <span x-text="String(current + 1).padStart(2, '0')">01</span>
+                            <span class="text-gold">/</span>
+                            {{ str_pad((string) count($adventurePhotos), 2, '0', STR_PAD_LEFT) }}
+                        </p>
+
+                        <button
+                            type="button"
+                            @click="next()"
+                            class="flex size-11 cursor-pointer items-center justify-center rounded-full border border-moss/30 bg-ivory text-moss-dark transition hover:bg-moss-dark hover:text-ivory"
+                            aria-label="Next photo"
+                        >
+                            <flux:icon.chevron-right variant="micro" />
+                        </button>
+                    </div>
+
+                    <p class="mt-4 text-center font-sans text-[0.6rem] uppercase tracking-[0.3em] text-ink-soft/70 sm:hidden">Swipe to see more</p>
+                </div>
+            </section>
+        @endif
 
         {{-- Ceremony & reception --}}
         <section id="details" class="scroll-mt-16 bg-paper/70 px-6 py-24 sm:py-32">

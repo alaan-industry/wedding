@@ -53,9 +53,9 @@ return [
     ],
 
     'reception' => [
-        'name' => "Virginia's Grand Event Hall",
-        'address' => 'Tadeco Road, Brgy. San Francisco, Panabo City, Davao del Norte',
-        'map_url' => 'https://www.google.com/maps/search/?api=1&query='.urlencode("Virginia's Grand Event Hall Panabo City"),
+        'name' => 'Casa de 828',
+        'address' => 'Panabo City, Davao del Norte',
+        'map_url' => 'https://www.google.com/maps/search/?api=1&query='.urlencode('Casa de 828 Panabo City'),
     ],
 
     /*
@@ -68,7 +68,7 @@ return [
         ['time' => '1:30 PM', 'title' => 'Guest Arrival', 'description' => 'Find your seat and settle in at San Pedro Parish.'],
         ['time' => '2:00 PM', 'title' => 'Holy Matrimony', 'description' => 'We say "I do" before God, family, and friends.'],
         ['time' => '4:00 PM', 'title' => 'Photos & Cocktails', 'description' => 'Light bites and drinks while we capture the moment.'],
-        ['time' => '5:00 PM', 'title' => 'Reception', 'description' => "Dinner, toasts, and stories at Virginia's Grand Event Hall."],
+        ['time' => '5:00 PM', 'title' => 'Reception', 'description' => 'Dinner, toasts, and stories at Casa de 828.'],
         ['time' => '7:30 PM', 'title' => 'First Dance & Party', 'description' => 'Bring your dancing shoes. The floor is yours.'],
     ],
 
@@ -110,7 +110,7 @@ return [
         ],
         [
             'question' => 'Is there parking at the venues?',
-            'answer' => "Yes. Virginia's Grand Event Hall has spacious parking for guests, and there is parking around the parish as well.",
+            'answer' => 'Yes. Casa de 828 has a parking area for guests, and there is parking around San Pedro Parish as well.',
         ],
         [
             'question' => 'Can I take photos during the ceremony?',
@@ -154,6 +154,44 @@ return [
         'images/couple-2.jpg',
         'images/couple-3.jpg',
         'images/couple-4.jpg',
+    ],
+
+    /*
+    | Photos from our trips together, shown oldest first in the "Our Adventures"
+    | carousel. Each needs a path inside the public folder and the date it
+    | was taken; the caption (e.g. the place) is optional. Photos that do
+    | not exist are skipped, and the section hides when none exist.
+    */
+
+    'adventures' => [
+        ['path' => 'images/adventures/01-2017-02.jpg', 'taken_on' => '2017-02-13', 'caption' => null],
+        ['path' => 'images/adventures/02-2018-08.jpg', 'taken_on' => '2018-08-05', 'caption' => null],
+        ['path' => 'images/adventures/03-2020-01.jpg', 'taken_on' => '2020-01-03', 'caption' => null],
+        ['path' => 'images/adventures/04-2020-01.jpg', 'taken_on' => '2020-01-03', 'caption' => null],
+        ['path' => 'images/adventures/05-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
+        ['path' => 'images/adventures/06-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
+        ['path' => 'images/adventures/07-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
+        ['path' => 'images/adventures/08-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
+        ['path' => 'images/adventures/09-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
+        ['path' => 'images/adventures/10-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
+        ['path' => 'images/adventures/11-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
+        ['path' => 'images/adventures/12-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
+        ['path' => 'images/adventures/13-2020-09.jpg', 'taken_on' => '2020-09-13', 'caption' => null],
+        ['path' => 'images/adventures/14-2020-09.jpg', 'taken_on' => '2020-09-13', 'caption' => null],
+        ['path' => 'images/adventures/15-2020-09.jpg', 'taken_on' => '2020-09-13', 'caption' => null],
+        ['path' => 'images/adventures/16-2020-09.jpg', 'taken_on' => '2020-09-20', 'caption' => null],
+        ['path' => 'images/adventures/17-2022-12.jpg', 'taken_on' => '2022-12-29', 'caption' => null],
+        ['path' => 'images/adventures/18-2023-11.jpg', 'taken_on' => '2023-11-22', 'caption' => null],
+        ['path' => 'images/adventures/19-2023-11.jpg', 'taken_on' => '2023-11-24', 'caption' => null],
+        ['path' => 'images/adventures/20-2023-11.jpg', 'taken_on' => '2023-11-24', 'caption' => null],
+        ['path' => 'images/adventures/21-2023-11.jpg', 'taken_on' => '2023-11-24', 'caption' => null],
+        ['path' => 'images/adventures/22-2023-11.jpg', 'taken_on' => '2023-11-25', 'caption' => null],
+        ['path' => 'images/adventures/23-2023-11.jpg', 'taken_on' => '2023-11-25', 'caption' => null],
+        ['path' => 'images/adventures/24-2023-11.jpg', 'taken_on' => '2023-11-25', 'caption' => null],
+        ['path' => 'images/adventures/25-2023-11.jpg', 'taken_on' => '2023-11-28', 'caption' => null],
+        ['path' => 'images/adventures/26-2023-11.jpg', 'taken_on' => '2023-11-29', 'caption' => null],
+        ['path' => 'images/adventures/27-2024-12.jpg', 'taken_on' => '2024-12-30', 'caption' => null],
+        ['path' => 'images/adventures/28-2025-03.jpg', 'taken_on' => '2025-03-30', 'caption' => null],
     ],
 
     /*
