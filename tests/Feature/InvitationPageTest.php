@@ -96,11 +96,12 @@ test('chatLinkPreviewsDoNotMarkTheInvitationAsOpened', function (string $userAge
     'viber' => 'Viber/20.3.0 CFNetwork/1485 Darwin/23.1.0',
 ]);
 
-test('doveCarriesTheConfiguredNotes', function () {
-    config(['wedding.dove_notes' => ['Thank you for celebrating with us']]);
+test('bubblesCarryTheConfiguredNotes', function () {
+    config(['wedding.bubble_notes' => ['Thank you for celebrating with us']]);
 
     $this->get(route('home'))
         ->assertOk()
+        ->assertSee('data-test="bubble"', false)
         ->assertSee('Thank you for celebrating with us');
 });
 

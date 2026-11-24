@@ -127,19 +127,19 @@ return [
     | Little Surprises
     |--------------------------------------------------------------------------
     |
-    | Notes the eagle drops when a guest taps it, and the song that plays
-    | once the envelope is opened. Place the song inside the public folder;
-    | the music button only appears when the file exists.
+    | Notes shown when a guest pops one of the floating bubbles, and the song
+    | that plays once the envelope is opened. Place the song inside the public
+    | folder; the music button only appears when the file exists.
     |
     */
 
-    'dove_notes' => [
-        'Screech! Thank you for flying in to celebrate with us.',
-        'Fun fact: eagles mate for life. So will these two.',
+    'bubble_notes' => [
+        'Pop! Thank you for floating in to celebrate with us.',
+        'Fun fact: some bubbles last forever. So will these two.',
         'Benjie\'s best merge yet: git merge monaliza --no-ff',
         'Love is patient, love is kind. (1 Corinthians 13:4)',
         'No bugs in this love story, only features.',
-        'Save your best dance moves for the reception. I\'ll be watching.',
+        'Save your best dance moves for the reception.',
         'Every love story is beautiful, but this one is our favourite.',
     ],
 

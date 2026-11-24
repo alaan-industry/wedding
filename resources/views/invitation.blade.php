@@ -142,28 +142,27 @@
             <x-wedding.posy class="pointer-events-none absolute top-[55%] left-[38%] hidden w-48 text-moss/10 lg:block" />
             <div class="pointer-events-none absolute -top-40 -left-40 size-[36rem] rounded-full bg-blush/15 blur-3xl"></div>
 
-            <div x-data="dove(@js(config('wedding.dove_notes')))" class="bird-sky pointer-events-none absolute inset-0 z-10">
-                <div x-ref="flier" class="absolute top-0 left-0 will-change-transform" style="transform: translate(-200px, 0)">
-                    <button
-                        type="button"
-                        @click="greet()"
-                        class="block cursor-pointer focus:outline-none"
-                        :class="leaving ? 'pointer-events-none' : 'pointer-events-auto bird-respawn'"
-                        aria-label="Say hello to the eagle"
-                        data-test="bird"
-                    >
-                        <span x-ref="pose" class="block">
-                            <x-wedding.bird class="w-20 drop-shadow-[0_6px_8px_rgb(51_64_79/0.2)] sm:w-28" />
-                        </span>
-                    </button>
-                </div>
+            <div x-data="bubbles(@js(config('wedding.bubble_notes')))" class="bubble-sky pointer-events-none absolute inset-0 z-10">
+                <template x-for="(bubble, index) in bubbles" :key="index">
+                    <div :data-bubble="index" class="absolute top-0 left-0 will-change-transform" style="transform: translate(-200px, 0)">
+                        <button
+                            type="button"
+                            @click="pop(index)"
+                            class="block cursor-pointer rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-moss/50 focus-visible:ring-offset-2"
+                            :class="bubble.popped ? 'bubble-popped pointer-events-none' : 'pointer-events-auto bubble-respawn'"
+                            aria-label="Pop the bubble"
+                            data-test="bubble"
+                        >
+                            <span class="bubble block aspect-square rounded-full" :class="index === 0 ? 'w-14 sm:w-20' : 'w-10 sm:w-14'"></span>
+                        </button>
+                    </div>
+                </template>
 
-                <template x-if="burst">
+                <template x-for="burst in bursts" :key="burst.id">
                     <span class="absolute" :style="`left: ${burst.x}px; top: ${burst.y}px`">
-                        @foreach (range(0, 9) as $particle)
-                            <span class="bird-particle absolute" style="--angle: {{ $particle * 36 + ($particle % 2) * 12 }}deg; --distance: {{ 44 + ($particle % 3) * 18 }}px;">
-                                <svg viewBox="0 0 20 18" class="{{ $particle % 2 ? 'w-2.5' : 'w-3.5' }}" aria-hidden="true"><path d="M10 17C4 12 0 9 0 5A5 5 0 0 1 10 3a5 5 0 0 1 10 2c0 4-4 7-10 12Z" fill="{{ $particle % 3 ? '#dcb7ab' : '#6b84a0' }}" /></svg>
-                            </span>
+                        <span class="bubble-ring absolute block size-14 rounded-full border-2 border-white/80"></span>
+                        @foreach (range(0, 7) as $droplet)
+                            <span class="bubble-particle absolute block rounded-full {{ $droplet % 2 ? 'size-1.5' : 'size-2.5' }}" style="--angle: {{ $droplet * 45 + ($droplet % 2) * 15 }}deg; --distance: {{ 34 + ($droplet % 3) * 14 }}px; background: {{ $droplet % 3 ? 'rgb(220 183 171 / 0.8)' : 'rgb(107 132 160 / 0.7)' }};"></span>
                         @endforeach
                     </span>
                 </template>
@@ -174,11 +173,11 @@
                             <button
                                 type="button"
                                 @click="note = null"
-                                class="dove-note absolute z-30 w-64 cursor-pointer border border-gold/60 bg-ivory/95 px-5 py-4 text-left shadow-[0_20px_40px_-20px_rgb(51_64_79/0.45)] backdrop-blur-sm"
+                                class="bubble-note absolute z-30 w-64 cursor-pointer border border-gold/60 bg-ivory/95 px-5 py-4 text-left shadow-[0_20px_40px_-20px_rgb(51_64_79/0.45)] backdrop-blur-sm"
                                 :style="`left: ${note.x}px; top: ${note.y}px`"
-                                data-test="dove-note"
+                                data-test="bubble-note"
                             >
-                                <span class="block font-sans text-[0.55rem] uppercase tracking-[0.35em] text-blush-dark">A note from the eagle</span>
+                                <span class="block font-sans text-[0.55rem] uppercase tracking-[0.35em] text-blush-dark">A little note</span>
                                 <span class="mt-2 block text-lg leading-snug italic text-ink" x-text="note.text"></span>
                             </button>
                         </template>
@@ -440,9 +439,9 @@
                 >
                     <ol
                         class="relative mx-auto aspect-[4/5] w-[62%] touch-pan-y select-none sm:w-[38%] lg:w-[26%]"
-                        @pointerdown="$el.setPointerCapture($event.pointerId); startSwipe($event)"
-                        @pointerup="endSwipe($event)"
-                        @pointercancel="startX = null"
+                        @pointerdown="startSwipe($event)"
+                        @pointerup.window="endSwipe($event)"
+                        @pointercancel.window="startX = null"
                     >
                         @foreach ($adventurePhotos as $photo)
                             <li

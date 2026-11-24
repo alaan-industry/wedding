@@ -131,139 +131,110 @@ function rainHearts() {
 window.addEventListener('rsvp-celebrate', celebrate);
 
 /**
- * An eagle that wanders the hero along random waypoints. When tapped it lets out
- * a puff of hearts, drops a little note, and flies off before returning later.
+ * Soap bubbles that drift up through the hero. Tapping one pops it into a
+ * spray of droplets and shows a little note, then a new bubble floats in later.
  */
-function dove(notes = []) {
+function bubbles(notes = [], count = 2) {
+    const motion = [];
+    let sky = null;
+
     return {
-        leaving: false,
-        away: false,
-        burst: null,
+        bubbles: Array.from({ length: count }, () => ({ popped: false })),
+        bursts: [],
         note: null,
         noteOrder: [],
         noteTimer: null,
-        x: 0,
-        y: 0,
-        heading: 0,
-        speed: 110,
-        target: { x: 0, y: 0 },
-        retargetAt: 0,
         lastFrameAt: 0,
 
         init() {
+            sky = this.$el;
+
             if (prefersReducedMotion()) {
                 return;
             }
 
-            this.spawn();
-            requestAnimationFrame((now) => this.fly(now));
+            this.bubbles.forEach((_, index) => this.spawn(index, 0.45 + index * 0.35));
+            requestAnimationFrame((now) => this.float(now));
         },
 
-        bounds() {
-            return { width: this.$el.clientWidth, height: this.$el.clientHeight };
-        },
-
-        pickTarget(now) {
-            const { width, height } = this.bounds();
-            let x = random(width * 0.08, width * 0.85);
-
-            while (Math.abs(x - this.x) < width * 0.3) {
-                x = random(width * 0.08, width * 0.85);
-            }
-
-            this.target = { x, y: random(height * 0.05, height * 0.75) };
-            this.speed = random(85, 150);
-            this.retargetAt = now + random(3000, 7000);
-        },
-
-        spawn() {
-            const { width, height } = this.bounds();
-            const edge = Math.floor(random(0, 3));
-
-            if (edge === 0) {
-                this.x = -180;
-                this.y = random(height * 0.05, height * 0.6);
-            } else if (edge === 1) {
-                this.x = width + 20;
-                this.y = random(height * 0.05, height * 0.6);
-            } else {
-                this.x = random(width * 0.1, width * 0.8);
-                this.y = -130;
-            }
-
-            this.pickTarget(performance.now());
-            this.heading = Math.atan2(this.target.y - this.y, this.target.x - this.x);
-        },
-
-        fly(now) {
-            const elapsed = Math.min((now - (this.lastFrameAt || now)) / 1000, 0.05);
-            this.lastFrameAt = now;
-
-            if (! this.away) {
-                const distance = Math.hypot(this.target.x - this.x, this.target.y - this.y);
-
-                if (! this.leaving && (distance < 60 || now > this.retargetAt)) {
-                    this.pickTarget(now);
-                }
-
-                const desired = Math.atan2(this.target.y - this.y, this.target.x - this.x);
-                const turn = Math.atan2(Math.sin(desired - this.heading), Math.cos(desired - this.heading));
-                const maxTurn = (this.leaving ? 4 : 1.8) * elapsed;
-
-                this.heading += Math.max(-maxTurn, Math.min(maxTurn, turn));
-                this.x += Math.cos(this.heading) * this.speed * elapsed;
-                this.y += Math.sin(this.heading) * this.speed * elapsed;
-
-                if (this.leaving && this.isOffScreen()) {
-                    this.away = true;
-
-                    setTimeout(() => {
-                        this.spawn();
-                        this.leaving = false;
-                        this.away = false;
-                    }, random(4000, 9000));
-                }
-
-                const facingLeft = Math.cos(this.heading) < 0;
-                const tilt = Math.max(-20, Math.min(20, (Math.atan2(Math.sin(this.heading), Math.abs(Math.cos(this.heading))) * 180) / Math.PI));
-
-                this.$refs.flier.style.transform = `translate(${this.x}px, ${this.y}px)`;
-                this.$refs.pose.style.transform = `scaleX(${facingLeft ? -1 : 1}) rotate(${tilt}deg)`;
-            }
-
-            requestAnimationFrame((next) => this.fly(next));
-        },
-
-        isOffScreen() {
-            const { width, height } = this.bounds();
-
-            return this.x < -200 || this.x > width + 40 || this.y < -150 || this.y > height + 40;
-        },
-
-        greet() {
-            if (this.leaving) {
-                return;
-            }
-
-            const { width } = this.bounds();
-            const centerX = this.x + this.$refs.pose.offsetWidth / 2;
-            const centerY = this.y + this.$refs.pose.offsetHeight / 2;
-
-            this.leaving = true;
-            this.burst = { x: centerX, y: centerY, id: performance.now() };
-            setTimeout(() => this.burst = null, 1000);
-
-            this.target = { x: Math.cos(this.heading) < 0 ? -280 : width + 120, y: -220 };
-            this.speed = 380;
-
-            this.showNote(this.$refs.pose.getBoundingClientRect());
+        element(index) {
+            return sky.querySelector(`[data-bubble="${index}"]`);
         },
 
         /**
-         * Show the next note beside the dove, kept inside the visible screen and
-         * clear of the fixed navigation bar.
+         * Place a bubble at the given height of the hero (as a fraction), or just below it.
          */
-        showNote(doveBounds) {
+        spawn(index, heightFraction = null) {
+            const width = sky.clientWidth;
+            const height = sky.clientHeight;
+
+            motion[index] = {
+                baseX: random(width * 0.08, width * 0.85),
+                y: heightFraction === null ? height + 20 : height * heightFraction,
+                speed: random(20, 45),
+                sway: random(12, 32),
+                swaySpeed: random(0.6, 1.2),
+                phase: random(0, Math.PI * 2),
+                x: 0,
+            };
+        },
+
+        float(now) {
+            const elapsed = Math.min((now - (this.lastFrameAt || now)) / 1000, 0.05);
+            this.lastFrameAt = now;
+
+            motion.forEach((bubble, index) => {
+                const element = this.element(index);
+
+                if (! element || this.bubbles[index].popped) {
+                    return;
+                }
+
+                bubble.y -= bubble.speed * elapsed;
+                bubble.phase += bubble.swaySpeed * elapsed;
+                bubble.x = Math.min(bubble.baseX + Math.sin(bubble.phase) * bubble.sway, sky.clientWidth - element.offsetWidth);
+
+                if (bubble.y < -element.offsetHeight - 20) {
+                    this.spawn(index);
+                }
+
+                element.style.transform = `translate(${bubble.x}px, ${bubble.y}px)`;
+            });
+
+            requestAnimationFrame((next) => this.float(next));
+        },
+
+        pop(index) {
+            const bubble = this.bubbles[index];
+            const element = this.element(index);
+
+            if (bubble.popped || ! element) {
+                return;
+            }
+
+            const id = performance.now();
+
+            bubble.popped = true;
+            this.bursts.push({
+                id,
+                x: motion[index].x + element.offsetWidth / 2,
+                y: motion[index].y + element.offsetHeight / 2,
+            });
+            setTimeout(() => this.bursts = this.bursts.filter((burst) => burst.id !== id), 1000);
+
+            this.showNote(element.getBoundingClientRect());
+
+            setTimeout(() => {
+                this.spawn(index);
+                bubble.popped = false;
+            }, random(3000, 7000));
+        },
+
+        /**
+         * Show the next note beside the popped bubble, kept inside the visible
+         * screen and clear of the fixed navigation bar.
+         */
+        showNote(bubbleBounds) {
             if (notes.length === 0) {
                 return;
             }
@@ -276,10 +247,10 @@ function dove(notes = []) {
             const noteHeight = 130;
             const margin = 16;
             const navigationHeight = 72;
-            const fitsBelow = doveBounds.bottom + 12 + noteHeight <= window.innerHeight - margin;
+            const fitsBelow = bubbleBounds.bottom + 12 + noteHeight <= window.innerHeight - margin;
 
-            const x = Math.max(margin, Math.min(window.innerWidth - noteWidth - margin, doveBounds.left + doveBounds.width / 2 - noteWidth / 2));
-            const y = Math.max(navigationHeight, Math.min(window.innerHeight - noteHeight - margin, fitsBelow ? doveBounds.bottom + 12 : doveBounds.top - 12 - noteHeight));
+            const x = Math.max(margin, Math.min(window.innerWidth - noteWidth - margin, bubbleBounds.left + bubbleBounds.width / 2 - noteWidth / 2));
+            const y = Math.max(navigationHeight, Math.min(window.innerHeight - noteHeight - margin, fitsBelow ? bubbleBounds.bottom + 12 : bubbleBounds.top - 12 - noteHeight));
 
             clearTimeout(this.noteTimer);
             this.note = { text: notes[this.noteOrder.pop()], x: x + window.scrollX, y: y + window.scrollY };
@@ -401,7 +372,7 @@ console.log(
 );
 
 document.addEventListener('alpine:init', () => {
-    window.Alpine.data('dove', dove);
+    window.Alpine.data('bubbles', bubbles);
     window.Alpine.data('sideFlowers', sideFlowers);
     window.Alpine.data('music', music);
 });
