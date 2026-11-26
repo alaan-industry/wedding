@@ -69,7 +69,7 @@ return [
         ['time' => '2:00 PM', 'title' => 'Holy Matrimony', 'description' => 'We say "I do" before God, family, and friends.'],
         ['time' => '4:00 PM', 'title' => 'Photos & Cocktails', 'description' => 'Light bites and drinks while we capture the moment.'],
         ['time' => '5:00 PM', 'title' => 'Reception', 'description' => 'Dinner, toasts, and stories at Casa de 828.'],
-        ['time' => '7:30 PM', 'title' => 'First Dance & Party', 'description' => 'Bring your dancing shoes. The floor is yours.'],
+        ['time' => '6:00 PM', 'title' => 'First Dance & Party', 'description' => 'Bring your dancing shoes. The floor is yours.'],
     ],
 
     /*
