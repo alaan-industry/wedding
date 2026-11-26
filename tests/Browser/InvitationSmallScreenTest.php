@@ -17,3 +17,15 @@ test('invitationFitsTheScreenWidthOfASmallPhone', function () {
 
     expect($overflowingWidth)->toBeLessThanOrEqual(0);
 });
+
+test('invitationFitsTheScreenWidthOfATablet', function () {
+    $invitation = Invitation::factory()->create();
+
+    $page = visit(route('invitation.show', $invitation, absolute: false))->on()->iPadMini()->assertNoJavaScriptErrors();
+
+    openEnvelope($page)->assertVisible('@decline-button');
+
+    $overflowingWidth = $page->script('() => document.documentElement.scrollWidth - document.documentElement.clientWidth');
+
+    expect($overflowingWidth)->toBeLessThanOrEqual(0);
+});

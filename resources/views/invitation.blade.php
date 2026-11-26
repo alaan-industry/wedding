@@ -99,8 +99,8 @@
         class="fixed inset-x-0 top-0 z-40 transition duration-500"
         :class="scrolled ? 'bg-ivory/90 shadow-[0_10px_30px_-20px_rgb(51_64_79/0.35)] backdrop-blur-md' : 'bg-transparent'"
     >
-        <nav class="mx-auto flex max-w-6xl items-center justify-between gap-10 px-6 py-3 font-sans text-[0.7rem] tracking-[0.12em] text-ink-soft md:grid md:grid-cols-[1fr_auto_1fr]">
-            <div class="hidden items-center justify-end gap-8 md:flex">
+        <nav class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-3 font-sans text-[0.7rem] tracking-[0.12em] text-ink-soft lg:grid lg:grid-cols-[1fr_auto_1fr] xl:gap-10">
+            <div class="hidden items-center justify-end gap-6 lg:flex xl:gap-8">
                 <a href="#story" class="transition hover:text-blush-dark">Our Story</a>
                 @if (count($adventurePhotos))
                     <a href="#adventures" class="transition hover:text-blush-dark">Our Adventures</a>
@@ -117,11 +117,11 @@
                 <span class="relative mt-0.5 text-[0.45rem] uppercase tracking-[0.35em] text-blush-dark">Wedding</span>
             </a>
 
-            <div class="flex items-center justify-end gap-8 md:justify-start">
-                <a href="#attire" class="hidden transition hover:text-blush-dark md:inline">Attire</a>
-                <a href="#wishes" class="hidden transition hover:text-blush-dark md:inline">Wishes</a>
-                <a href="#faq" class="hidden transition hover:text-blush-dark md:inline">FAQ</a>
-                <a href="#rsvp" class="bg-moss-dark px-5 py-2.5 uppercase tracking-[0.25em] text-ivory transition hover:bg-ink md:ml-auto">RSVP</a>
+            <div class="flex items-center justify-end gap-6 lg:justify-start xl:gap-8">
+                <a href="#attire" class="hidden transition hover:text-blush-dark lg:inline">Attire</a>
+                <a href="#wishes" class="hidden transition hover:text-blush-dark lg:inline">Wishes</a>
+                <a href="#faq" class="hidden transition hover:text-blush-dark lg:inline">FAQ</a>
+                <a href="#rsvp" class="bg-moss-dark px-5 py-2.5 uppercase tracking-[0.25em] text-ivory transition hover:bg-ink lg:ml-auto">RSVP</a>
             </div>
         </nav>
     </header>
@@ -295,7 +295,7 @@
 
         {{-- Countdown --}}
         <section class="relative px-6 pt-10 pb-12 sm:py-24">
-            <div class="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-[auto_1fr] md:gap-16">
+            <div class="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-[auto_auto] lg:justify-center lg:gap-16">
                 <div class="reveal relative mx-auto size-60 sm:size-72" x-data x-intersect.once="$el.classList.add('is-visible')">
                     <div class="absolute inset-4 [clip-path:polygon(25%_5%,75%_5%,100%_50%,75%_95%,25%_95%,0%_50%)]">
                         @if ($photos[3] ?? null)
@@ -316,8 +316,8 @@
                     <x-wedding.sprig class="pointer-events-none absolute top-1/2 -left-4 h-24 w-9 sm:-left-8 -translate-y-1/2 -rotate-12 text-moss/70" />
                 </div>
 
-                <div class="reveal text-center md:text-left" x-data x-intersect.once="$el.classList.add('is-visible')">
-                    <div class="flex items-center justify-center gap-5 md:justify-start">
+                <div class="reveal text-center lg:text-left" x-data x-intersect.once="$el.classList.add('is-visible')">
+                    <div class="flex items-center justify-center gap-5 lg:justify-start">
                         <p class="font-display text-3xl text-moss-dark sm:text-4xl">{{ $wedding->coupleNames() }}</p>
                         <span class="hidden h-px w-16 bg-gold sm:block"></span>
                     </div>
@@ -338,7 +338,7 @@
                             },
                         }"
                         x-init="tick(); setInterval(() => tick(), 1000)"
-                        class="mt-8 flex items-center justify-center gap-1 sm:gap-6 md:justify-start"
+                        class="mt-8 flex items-center justify-center gap-1 sm:gap-6 lg:justify-start"
                     >
                         @foreach (['days' => 'Days', 'hours' => 'Hours', 'minutes' => 'Minutes', 'seconds' => 'Seconds'] as $unit => $label)
                             @unless ($loop->first)
