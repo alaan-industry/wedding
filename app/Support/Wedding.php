@@ -127,11 +127,26 @@ class Wedding
     }
 
     /**
-     * Get the URL of the link preview picture, falling back to the first photo, or null when neither exists.
+     * Get the link preview picture with its size and type, falling back to the first photo, or null when neither exists.
+     *
+     * Chat apps such as Messenger only show the picture on the first share of a link when its size is given.
+     *
+     * @return array{url: string, width: int, height: int, type: string}|null
      */
-    public function ogImageUrl(): ?string
+    public function ogImage(): ?array
     {
-        return $this->publicAssetUrl(config('wedding.og_image')) ?? ($this->photoUrls()[0] ?? null);
+        $photos = array_values(config('wedding.photos', []));
+
+        foreach ([config('wedding.og_image'), $photos[0] ?? null] as $path) {
+            $url = $this->publicAssetUrl($path);
+            $size = $url === null ? false : getimagesize(public_path($path));
+
+            if ($size !== false) {
+                return ['url' => $url, 'width' => $size[0], 'height' => $size[1], 'type' => $size['mime']];
+            }
+        }
+
+        return null;
     }
 
     /**

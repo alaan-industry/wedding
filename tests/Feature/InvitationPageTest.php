@@ -216,3 +216,14 @@ test('calendarDownloadContainsTheCeremonyAndReception', function () {
         ->toContain('SUMMARY:Benjie & Monaliza — Wedding Reception')
         ->toContain('DTEND:20270130T140000Z');
 });
+
+test('personalInvitationSharesThePreviewPictureWithItsSize', function () {
+    $invitation = Invitation::factory()->create();
+
+    $this->get(route('invitation.show', $invitation))
+        ->assertOk()
+        ->assertSee('<meta property="og:image" content="'.asset('images/og-image.jpg').'" />', false)
+        ->assertSee('<meta property="og:image:width" content="1200" />', false)
+        ->assertSee('<meta property="og:image:height" content="630" />', false)
+        ->assertSee('<meta property="og:image:type" content="image/jpeg" />', false);
+});
