@@ -242,15 +242,15 @@ new class extends Component
             <p class="mt-2 text-xl text-ink-soft">will you be there to share the best day of our lives?</p>
 
             <div class="mt-10 grid gap-4 sm:grid-cols-2">
-                <button type="button" wire:click="choose(true)" class="group flex flex-col items-center rounded-md border border-moss/40 bg-paper/50 px-6 py-8 transition hover:-translate-y-1 hover:border-moss hover:bg-ivory hover:shadow-lg" data-test="accept-button">
+                <button type="button" wire:click="choose(true)" class="group flex flex-col items-center rounded-md border border-moss/40 bg-paper/50 px-4 py-8 sm:px-6 transition hover:-translate-y-1 hover:border-moss hover:bg-ivory hover:shadow-lg" data-test="accept-button">
                     <flux:icon.heart variant="solid" class="size-7 text-blush transition group-hover:scale-110 group-hover:text-rose-400" />
-                    <span class="mt-4 font-display text-2xl whitespace-nowrap text-ink">Joyfully accepts</span>
+                    <span class="mt-4 font-display text-xl text-ink min-[360px]:text-2xl sm:whitespace-nowrap">Joyfully accepts</span>
                     <span class="mt-2 font-sans text-[0.6rem] uppercase tracking-[0.3em] text-ink-soft">I wouldn't miss it</span>
                 </button>
 
-                <button type="button" wire:click="choose(false)" class="group flex flex-col items-center rounded-md border border-moss/20 px-6 py-8 transition hover:-translate-y-1 hover:border-moss/50 hover:shadow-lg" data-test="decline-button">
+                <button type="button" wire:click="choose(false)" class="group flex flex-col items-center rounded-md border border-moss/20 px-4 py-8 sm:px-6 transition hover:-translate-y-1 hover:border-moss/50 hover:shadow-lg" data-test="decline-button">
                     <flux:icon.envelope-open variant="outline" class="size-7 text-ink-soft/70" />
-                    <span class="mt-4 font-display text-2xl whitespace-nowrap text-ink-soft">Regretfully declines</span>
+                    <span class="mt-4 font-display text-xl text-ink-soft min-[360px]:text-2xl sm:whitespace-nowrap">Regretfully declines</span>
                     <span class="mt-2 font-sans text-[0.6rem] uppercase tracking-[0.3em] text-ink-soft">Celebrating in spirit</span>
                 </button>
             </div>

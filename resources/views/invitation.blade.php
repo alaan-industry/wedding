@@ -15,9 +15,9 @@
 
     $heroPhotoSets = $wedding->heroPhotoSets();
     $heroPanels = [
-        ['eyebrow' => 'Save the date', 'title' => $ceremonyStartsAt->format('m · d · Y'), 'tone' => 'from-moss-light via-paper to-linen', 'frame' => 'z-0 mt-16 -mr-3 sm:-mr-4', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 10, 'float' => 'animation-duration: 7s; animation-delay: 0s', 'shine' => '0s'],
-        ['eyebrow' => 'Forever begins', 'title' => $wedding->monogram(), 'tone' => 'from-blush/60 via-paper to-ivory', 'frame' => 'z-20', 'shadow' => 'shadow-[0_35px_60px_-25px_rgb(51_64_79/0.7)]', 'depth' => 24, 'float' => 'animation-duration: 9s; animation-delay: -3s', 'shine' => '2.5s', 'script' => true],
-        ['eyebrow' => 'Panabo City', 'title' => config('wedding.ceremony.name'), 'tone' => 'from-sage/45 via-paper to-linen', 'frame' => 'z-10 mt-28 -ml-4 sm:-ml-5', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 16, 'float' => 'animation-duration: 8s; animation-delay: -5s', 'shine' => '5s'],
+        ['eyebrow' => 'Save the date', 'title' => $ceremonyStartsAt->format('m · d · Y'), 'tone' => 'from-moss-light via-paper to-linen', 'frame' => 'z-10 -mr-3 sm:-mr-4', 'aspect' => 'aspect-[2/3]', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 14, 'float' => 'animation-duration: 8s; animation-delay: 0s', 'shine' => '0s'],
+        ['eyebrow' => 'Forever begins', 'title' => $wedding->monogram(), 'tone' => 'from-blush/60 via-paper to-ivory', 'frame' => 'z-20', 'aspect' => 'aspect-[3/5]', 'shadow' => 'shadow-[0_35px_60px_-25px_rgb(51_64_79/0.7)]', 'depth' => 24, 'float' => 'animation-duration: 9s; animation-delay: -3s', 'shine' => '2.5s', 'script' => true],
+        ['eyebrow' => 'Panabo City', 'title' => config('wedding.ceremony.name'), 'tone' => 'from-sage/45 via-paper to-linen', 'frame' => 'z-10 -ml-3 sm:-ml-4', 'aspect' => 'aspect-[2/3]', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 14, 'float' => 'animation-duration: 8s; animation-delay: -4s', 'shine' => '5s'],
     ];
 @endphp
 
@@ -99,8 +99,8 @@
         class="fixed inset-x-0 top-0 z-40 transition duration-500"
         :class="scrolled ? 'bg-ivory/90 shadow-[0_10px_30px_-20px_rgb(51_64_79/0.35)] backdrop-blur-md' : 'bg-transparent'"
     >
-        <nav class="mx-auto flex max-w-6xl items-center justify-between gap-10 px-6 py-3 font-sans text-[0.7rem] tracking-[0.12em] text-ink-soft md:grid md:grid-cols-[1fr_auto_1fr]">
-            <div class="hidden items-center justify-end gap-8 md:flex">
+        <nav class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-3 font-sans text-[0.7rem] tracking-[0.12em] text-ink-soft lg:grid lg:grid-cols-[1fr_auto_1fr] xl:gap-10">
+            <div class="hidden items-center justify-end gap-6 lg:flex xl:gap-8">
                 <a href="#story" class="transition hover:text-blush-dark">Our Story</a>
                 @if (count($adventurePhotos))
                     <a href="#adventures" class="transition hover:text-blush-dark">Our Adventures</a>
@@ -117,11 +117,11 @@
                 <span class="relative mt-0.5 text-[0.45rem] uppercase tracking-[0.35em] text-blush-dark">Wedding</span>
             </a>
 
-            <div class="flex items-center justify-end gap-8 md:justify-start">
-                <a href="#attire" class="hidden transition hover:text-blush-dark md:inline">Attire</a>
-                <a href="#wishes" class="hidden transition hover:text-blush-dark md:inline">Wishes</a>
-                <a href="#faq" class="hidden transition hover:text-blush-dark md:inline">FAQ</a>
-                <a href="#rsvp" class="bg-moss-dark px-5 py-2.5 uppercase tracking-[0.25em] text-ivory transition hover:bg-ink md:ml-auto">RSVP</a>
+            <div class="flex items-center justify-end gap-6 lg:justify-start xl:gap-8">
+                <a href="#attire" class="hidden transition hover:text-blush-dark lg:inline">Attire</a>
+                <a href="#wishes" class="hidden transition hover:text-blush-dark lg:inline">Wishes</a>
+                <a href="#faq" class="hidden transition hover:text-blush-dark lg:inline">FAQ</a>
+                <a href="#rsvp" class="bg-moss-dark px-5 py-2.5 uppercase tracking-[0.25em] text-ivory transition hover:bg-ink lg:ml-auto">RSVP</a>
             </div>
         </nav>
     </header>
@@ -209,7 +209,7 @@
                         <p class="mt-5 text-2xl italic text-ink">Dear {{ $invitation->name }},</p>
                     @endif
 
-                    <h1 class="mt-4 font-display text-5xl leading-[1.08] text-moss-dark sm:text-6xl xl:text-7xl">
+                    <h1 class="mt-4 font-display text-[2.6rem] leading-[1.08] min-[360px]:text-5xl text-moss-dark sm:text-6xl xl:text-7xl">
                         {{ config('wedding.groom.first_name') }}
                         <span class="font-serif font-light italic text-blush-dark">&amp;</span>
                         <span class="block">{{ config('wedding.bride.first_name') }}</span>
@@ -221,15 +221,15 @@
                         beginning of our forever.
                     </p>
 
-                    <div class="mt-8 flex items-center gap-5">
-                        <span class="font-display text-2xl text-ink sm:text-3xl">{{ $ceremonyStartsAt->format('F j, Y') }}</span>
+                    <div class="mt-8 flex items-center gap-3 sm:gap-5">
+                        <span class="font-display text-xl whitespace-nowrap text-ink min-[360px]:text-2xl sm:text-3xl">{{ $ceremonyStartsAt->format('F j, Y') }}</span>
                         <span class="h-8 w-px bg-gold"></span>
                         <span class="font-sans text-[0.7rem] leading-5 uppercase tracking-[0.25em] text-ink-soft">
                             {{ $ceremonyStartsAt->format('l') }}<br>{{ $ceremonyStartsAt->format('g:i A') }}
                         </span>
                     </div>
 
-                    <p class="mt-3 text-lg italic text-ink-soft">{{ config('wedding.ceremony.name') }} · San Vicente, Panabo City</p>
+                    <p class="mt-3 text-base italic text-ink-soft sm:text-lg">{{ config('wedding.ceremony.name') }} · San Vicente, <span class="whitespace-nowrap">Panabo City</span></p>
 
                     @if ($invitation)
                         <p class="mt-5 font-sans text-[0.7rem] uppercase tracking-[0.3em] text-moss" data-test="reserved-seats">
@@ -248,7 +248,7 @@
                     </div>
                 </div>
 
-                <div class="relative mx-auto grid w-full max-w-sm grid-cols-[0.85fr_1.2fr_0.95fr] items-start px-2 sm:max-w-lg sm:px-0 lg:max-w-none" x-data="heroPhotos(@js($heroPhotoSets))" x-intersect:enter="isVisible = true" x-intersect:leave="isVisible = false">
+                <div class="relative mx-auto grid w-full max-w-sm grid-cols-[1fr_1.2fr_1fr] items-center px-4 sm:max-w-lg sm:px-0 lg:max-w-none" x-data="heroPhotos(@js($heroPhotoSets))" x-intersect:enter="isVisible = true" x-intersect:leave="isVisible = false">
                     @foreach ($heroPanels as $index => $panel)
                         <figure
                             class="reveal relative {{ $panel['frame'] }}"
@@ -257,7 +257,7 @@
                             x-intersect.once="$el.classList.add('is-visible')"
                         >
                             <div class="hero-parallax" style="--depth: {{ $panel['depth'] }}">
-                                <div class="hero-float photo-frame aspect-[3/5] bg-linen transition-transform duration-700 motion-safe:hover:scale-[1.03] {{ $panel['shadow'] }}" style="{{ $panel['float'] }}">
+                                <div class="hero-float photo-frame {{ $panel['aspect'] }} bg-linen transition-transform duration-700 motion-safe:hover:scale-[1.03] {{ $panel['shadow'] }}" style="{{ $panel['float'] }}">
                                     @if ($heroPhotoSets[$index] !== [])
                                         <div class="absolute inset-0 isolate">
                                             @foreach ($heroPhotoSets[$index] as $photoIndex => $photoUrl)
@@ -286,16 +286,16 @@
                         </figure>
                     @endforeach
 
-                    <x-wedding.posy class="pointer-events-none absolute top-6 -left-6 z-30 w-20 text-blush-dark/80 sm:w-28" />
-                    <x-wedding.sprig class="pointer-events-none absolute -right-2 bottom-10 z-30 h-28 w-10 rotate-[200deg] text-moss/70 sm:h-36 sm:w-14" />
-                    <x-wedding.posy class="pointer-events-none absolute top-[80%] left-[28%] z-30 w-16 -scale-x-100 text-gold sm:w-24" />
+                    <x-wedding.posy class="pointer-events-none absolute top-[10%] -left-2 z-30 w-16 text-blush-dark/80 sm:-left-6 sm:w-28" />
+                    <x-wedding.sprig class="pointer-events-none absolute right-0 bottom-[8%] z-30 h-28 w-10 rotate-[200deg] text-moss/70 sm:-right-2 sm:h-36 sm:w-14" />
+                    <x-wedding.posy class="pointer-events-none absolute top-[78%] left-[26%] z-30 w-12 -scale-x-100 text-gold sm:w-24" />
                 </div>
             </div>
         </section>
 
         {{-- Countdown --}}
-        <section class="relative px-6 pt-10 pb-20 sm:py-24">
-            <div class="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-[auto_1fr] md:gap-16">
+        <section class="relative px-6 pt-10 pb-12 sm:py-24">
+            <div class="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-[auto_auto] lg:justify-center lg:gap-16">
                 <div class="reveal relative mx-auto size-60 sm:size-72" x-data x-intersect.once="$el.classList.add('is-visible')">
                     <div class="absolute inset-4 [clip-path:polygon(25%_5%,75%_5%,100%_50%,75%_95%,25%_95%,0%_50%)]">
                         @if ($photos[3] ?? null)
@@ -311,13 +311,13 @@
                         <polygon points="25,3 75,3 99,50 75,97 25,97 1,50" stroke="currentColor" stroke-width=".5" vector-effect="non-scaling-stroke" />
                         <polygon points="25,3 75,3 99,50 75,97 25,97 1,50" stroke="currentColor" stroke-width=".5" vector-effect="non-scaling-stroke" transform="rotate(10 50 50)" opacity=".6" />
                     </svg>
-                    <x-wedding.posy class="pointer-events-none absolute -top-4 -left-6 w-24 text-blush-dark" />
-                    <x-wedding.posy class="pointer-events-none absolute -right-6 -bottom-4 w-24 rotate-180 text-blush-dark" />
-                    <x-wedding.sprig class="pointer-events-none absolute top-1/2 -left-8 h-24 w-9 -translate-y-1/2 -rotate-12 text-moss/70" />
+                    <x-wedding.posy class="pointer-events-none absolute -top-4 -left-2 w-20 text-blush-dark sm:-left-6 sm:w-24" />
+                    <x-wedding.posy class="pointer-events-none absolute -right-2 -bottom-4 w-20 rotate-180 text-blush-dark sm:-right-6 sm:w-24" />
+                    <x-wedding.sprig class="pointer-events-none absolute top-1/2 -left-4 h-24 w-9 sm:-left-8 -translate-y-1/2 -rotate-12 text-moss/70" />
                 </div>
 
-                <div class="reveal text-center md:text-left" x-data x-intersect.once="$el.classList.add('is-visible')">
-                    <div class="flex items-center justify-center gap-5 md:justify-start">
+                <div class="reveal text-center lg:text-left" x-data x-intersect.once="$el.classList.add('is-visible')">
+                    <div class="flex items-center justify-center gap-5 lg:justify-start">
                         <p class="font-display text-3xl text-moss-dark sm:text-4xl">{{ $wedding->coupleNames() }}</p>
                         <span class="hidden h-px w-16 bg-gold sm:block"></span>
                     </div>
@@ -338,15 +338,15 @@
                             },
                         }"
                         x-init="tick(); setInterval(() => tick(), 1000)"
-                        class="mt-8 flex items-center justify-center gap-1.5 sm:gap-6 md:justify-start"
+                        class="mt-8 flex items-center justify-center gap-1 sm:gap-6 lg:justify-start"
                     >
                         @foreach (['days' => 'Days', 'hours' => 'Hours', 'minutes' => 'Minutes', 'seconds' => 'Seconds'] as $unit => $label)
                             @unless ($loop->first)
-                                <x-wedding.sprig class="h-10 w-3 shrink-0 {{ $loop->even ? 'rotate-12' : '-rotate-12' }} text-sage sm:h-16 sm:w-6" filled />
+                                <x-wedding.sprig class="hidden h-10 w-3 shrink-0 {{ $loop->even ? 'rotate-12' : '-rotate-12' }} text-sage min-[360px]:block sm:h-16 sm:w-6" filled />
                             @endunless
-                            <div class="flex min-w-12 flex-col items-center sm:min-w-16">
-                                <span class="font-display text-3xl lining-nums tabular-nums text-blush-dark sm:text-5xl" x-text="String(parts.{{ $unit }}).padStart(2, '0')">00</span>
-                                <span class="mt-2 font-sans text-[0.55rem] uppercase tracking-[0.12em] text-ink-soft sm:text-[0.6rem] sm:tracking-[0.2em]">{{ $label }}</span>
+                            <div class="flex min-w-11 flex-col items-center sm:min-w-16">
+                                <span class="font-display text-[1.7rem] lining-nums tabular-nums text-blush-dark min-[360px]:text-3xl sm:text-5xl" x-text="String(parts.{{ $unit }}).padStart(2, '0')">00</span>
+                                <span class="mt-2 font-sans text-[0.55rem] uppercase tracking-[0.06em] text-ink-soft min-[360px]:tracking-[0.12em] sm:text-[0.6rem] sm:tracking-[0.2em]">{{ $label }}</span>
                             </div>
                         @endforeach
                     </div>
@@ -360,7 +360,7 @@
         </section>
 
         {{-- Our story --}}
-        <section id="story" class="scroll-mt-16 px-6 py-24 sm:py-32">
+        <section id="story" class="scroll-mt-16 px-6 pt-16 pb-24 sm:py-32">
             <x-wedding.section-heading eyebrow="How it all compiled" title="Our Story">
                 He writes code; she takes care of people. Somewhere between his bug fixes and
                 her school bells, we found each other, and realized that the best thing either
@@ -556,19 +556,19 @@
                     ['label' => 'The Ceremony', 'icon' => 'heart', 'venue' => config('wedding.ceremony'), 'time' => $ceremonyStartsAt],
                     ['label' => 'The Reception', 'icon' => 'sparkles', 'venue' => config('wedding.reception'), 'time' => $receptionStartsAt],
                 ] as $event)
-                    <article class="reveal relative flex flex-col items-center bg-ivory px-8 py-14 text-center shadow-[0_25px_50px_-30px_rgb(51_64_79/0.45)]" x-data x-intersect.once="$el.classList.add('is-visible')">
+                    <article class="reveal relative flex flex-col items-center bg-ivory px-5 py-14 text-center sm:px-8 shadow-[0_25px_50px_-30px_rgb(51_64_79/0.45)]" x-data x-intersect.once="$el.classList.add('is-visible')">
                         <span class="pointer-events-none absolute inset-3 border border-gold/50"></span>
-                        <x-wedding.posy class="pointer-events-none absolute -top-5 -right-5 w-20 text-blush-dark/70" />
+                        <x-wedding.posy class="pointer-events-none absolute -top-5 -right-1 w-16 text-blush-dark/70 sm:-right-5 sm:w-20" />
                         <span class="flex size-14 items-center justify-center rounded-full bg-moss-light/60 text-moss-dark">
                             <flux:icon :icon="$event['icon']" variant="outline" class="size-6" />
                         </span>
                         <p class="mt-6 font-sans text-[0.7rem] uppercase tracking-[0.35em] text-blush-dark">{{ $event['label'] }}</p>
                         <p class="mt-3 font-display text-4xl text-moss-dark">{{ $event['time']->format('g:i A') }}</p>
                         <p class="mt-1 italic text-ink-soft">{{ $event['time']->format('l, F j, Y') }}</p>
-                        <x-wedding.ornament class="my-6 h-4 w-32 text-gold" />
+                        <x-wedding.ornament class="my-6 h-4 w-32 max-w-full text-gold" />
                         <p class="font-display text-2xl text-ink">{{ $event['venue']['name'] }}</p>
                         <p class="mt-1 text-base text-ink-soft">{{ $event['venue']['address'] }}</p>
-                        <a href="{{ $event['venue']['map_url'] }}" target="_blank" rel="noopener" class="relative mt-8 inline-flex items-center gap-2 bg-moss-dark px-6 py-3 font-sans text-[0.7rem] uppercase tracking-[0.25em] text-ivory transition hover:bg-ink">
+                        <a href="{{ $event['venue']['map_url'] }}" target="_blank" rel="noopener" class="relative mt-8 inline-flex items-center gap-2 bg-moss-dark px-5 py-3 font-sans text-[0.7rem] uppercase tracking-[0.2em] text-ivory transition hover:bg-ink sm:px-6 sm:tracking-[0.25em]">
                             <flux:icon.map-pin variant="micro" />
                             Get directions
                         </a>
@@ -581,13 +581,13 @@
         <section id="schedule" class="scroll-mt-16 px-6 py-24 sm:py-32">
             <x-wedding.section-heading eyebrow="Order of the day" title="Schedule" />
 
-            <ol class="relative mx-auto mt-16 max-w-2xl">
-                <span class="absolute top-2 bottom-2 left-[5.5rem] w-px bg-gold/70 sm:left-1/2"></span>
+            <ol class="relative mx-auto mt-16 w-fit max-w-xl">
+                <span class="absolute top-2 bottom-2 left-[6.75rem] w-px -translate-x-1/2 bg-gold/70 sm:left-[9rem]"></span>
 
                 @foreach (config('wedding.timeline') as $moment)
-                    <li class="reveal relative grid grid-cols-[5rem_1fr] gap-8 pb-12 last:pb-0 sm:grid-cols-2 sm:gap-16" x-data x-intersect.once="$el.classList.add('is-visible')">
-                        <span class="absolute top-2 left-[5.5rem] size-3 -translate-x-1/2 rotate-45 border border-blush-dark bg-ivory ring-4 ring-ivory sm:left-1/2"></span>
-                        <p class="pt-0.5 text-right font-sans text-xs uppercase tracking-[0.2em] text-blush-dark">{{ $moment['time'] }}</p>
+                    <li class="reveal relative grid grid-cols-[5.5rem_1fr] gap-x-10 pb-12 last:pb-0 sm:grid-cols-[7rem_1fr] sm:gap-x-16" x-data x-intersect.once="$el.classList.add('is-visible')">
+                        <span class="absolute top-2 left-[6.75rem] size-3 -translate-x-1/2 rotate-45 border border-blush-dark bg-ivory ring-4 ring-ivory sm:left-[9rem]"></span>
+                        <p class="whitespace-nowrap pt-0.5 text-right font-sans text-xs uppercase tracking-[0.2em] text-blush-dark">{{ $moment['time'] }}</p>
                         <div>
                             <p class="font-display text-2xl text-moss-dark">{{ $moment['title'] }}</p>
                             <p class="mt-1 text-base text-ink-soft">{{ $moment['description'] }}</p>
@@ -633,7 +633,7 @@
                 @endforeach
             </div>
 
-            <p class="mt-16 text-center font-sans text-sm uppercase tracking-[0.35em] shimmer-text animate-shimmer">{{ config('wedding.hashtag') }}</p>
+            <p class="mt-16 text-center font-sans text-xs uppercase tracking-[0.15em] [overflow-wrap:anywhere] shimmer-text animate-shimmer sm:text-sm sm:tracking-[0.35em]">{{ config('wedding.hashtag') }}</p>
         </section>
 
         {{-- RSVP --}}

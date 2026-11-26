@@ -48,7 +48,7 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="paper-texture min-h-screen font-serif [--font-sans:var(--font-label)] text-ink antialiased selection:bg-blush/50">
+    <body class="paper-texture min-h-screen overflow-x-clip font-serif [--font-sans:var(--font-label)] text-ink antialiased selection:bg-blush/50">
         {{ $slot }}
     </body>
 </html>
