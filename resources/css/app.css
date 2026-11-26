@@ -174,16 +174,6 @@ select:focus[data-flux-control] {
     opacity: 0;
 }
 
-.bird-wing {
-    transform-box: fill-box;
-    transform-origin: 50% 100%;
-    animation: bird-flap .7s ease-in-out infinite alternate;
-}
-
-.bird-wing-far {
-    animation-delay: -.08s;
-}
-
 .side-flower {
     pointer-events: visiblePainted;
     cursor: pointer;
@@ -204,21 +194,49 @@ select:focus[data-flux-control] {
     animation: music-bar .9s ease-in-out infinite alternate;
 }
 
-.dove-note {
-    animation: dove-note .5s cubic-bezier(.3, 1.4, .5, 1);
+.bubble {
+    border: 1px solid rgb(255 255 255 / .75);
+    background:
+        radial-gradient(circle at 32% 28%, rgb(255 255 255 / .95) 0 7%, rgb(255 255 255 / 0) 16%),
+        radial-gradient(circle at 70% 76%, rgb(255 255 255 / .55) 0 4%, rgb(255 255 255 / 0) 10%),
+        radial-gradient(circle, rgb(255 255 255 / 0) 52%, rgb(107 132 160 / .22) 74%, rgb(220 183 171 / .5) 100%),
+        conic-gradient(from 210deg, rgb(220 183 171 / .2), rgb(107 132 160 / .2), rgb(196 216 206 / .2), rgb(220 183 171 / .2));
+    box-shadow: inset 0 0 14px rgb(255 255 255 / .55), 0 8px 16px -8px rgb(51 64 79 / .3);
+    animation: bubble-wobble 3.2s ease-in-out infinite alternate;
 }
 
-.bird-respawn {
-    animation: bird-respawn .6s cubic-bezier(.3, 1.6, .5, 1);
+.bubble-popped {
+    animation: bubble-pop .22s ease-out forwards;
 }
 
-.bird-particle {
-    animation: bird-burst .9s ease-out forwards;
+.bubble-respawn {
+    animation: bubble-respawn .6s cubic-bezier(.3, 1.6, .5, 1);
 }
 
-@keyframes bird-flap {
-    from { transform: scaleY(1); }
-    to { transform: scaleY(-.6); }
+.bubble-ring {
+    animation: bubble-ring .45s ease-out forwards;
+}
+
+.bubble-particle {
+    animation: bubble-burst .8s ease-out forwards;
+}
+
+.bubble-note {
+    animation: bubble-note .5s cubic-bezier(.3, 1.4, .5, 1);
+}
+
+@keyframes bubble-wobble {
+    from { transform: scale(1.04, .96); }
+    to { transform: scale(.97, 1.03); }
+}
+
+@keyframes bubble-pop {
+    to { scale: 1.45; opacity: 0; }
+}
+
+@keyframes bubble-ring {
+    from { transform: translate(-50%, -50%) scale(.6); opacity: 1; }
+    to { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
 }
 
 @keyframes flower-spin {
@@ -235,15 +253,15 @@ select:focus[data-flux-control] {
     to { transform: scaleY(1); }
 }
 
-@keyframes dove-note {
+@keyframes bubble-note {
     from { opacity: 0; transform: translateY(12px) rotate(-3deg) scale(.9); }
 }
 
-@keyframes bird-respawn {
+@keyframes bubble-respawn {
     from { scale: 0; opacity: 0; }
 }
 
-@keyframes bird-burst {
+@keyframes bubble-burst {
     from { transform: translate(-50%, -50%) rotate(var(--angle)) translateX(0) scale(1); opacity: 1; }
     to { transform: translate(-50%, -50%) rotate(var(--angle)) translateX(var(--distance)) rotate(90deg) scale(.4); opacity: 0; }
 }
@@ -265,13 +283,13 @@ select:focus[data-flux-control] {
         animation: none;
     }
 
-    .bird-sky {
+    .bubble-sky {
         display: none;
     }
 
     .side-flower.is-spinning,
     .heart-pop svg,
-    .dove-note {
+    .bubble-note {
         animation: none;
     }
 }

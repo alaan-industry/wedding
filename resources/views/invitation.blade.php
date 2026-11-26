@@ -4,6 +4,14 @@
     $ceremonyStartsAt = $wedding->ceremonyStartsAt();
     $receptionStartsAt = $wedding->receptionStartsAt();
     $photos = $wedding->photoUrls();
+    $adventurePhotos = $wedding->adventurePhotos();
+    $adventureStartIndex = $wedding->featuredAdventureIndex($adventurePhotos);
+    $adventureCount = max(count($adventurePhotos), 1);
+    $preloadedAdventureIndexes = collect(range(-2, 2))
+        ->map(fn (int $step): int => (($adventureStartIndex + $step) % $adventureCount + $adventureCount) % $adventureCount)
+        ->unique()
+        ->values()
+        ->all();
 
     $heroPanels = [
         ['eyebrow' => 'Save the date', 'title' => $ceremonyStartsAt->format('m · d · Y'), 'tone' => 'from-moss-light via-paper to-linen', 'offset' => 'mt-12'],
@@ -91,6 +99,9 @@
         <nav class="mx-auto flex max-w-6xl items-center justify-between gap-10 px-6 py-3 font-sans text-[0.7rem] tracking-[0.12em] text-ink-soft md:grid md:grid-cols-[1fr_auto_1fr]">
             <div class="hidden items-center justify-end gap-8 md:flex">
                 <a href="#story" class="transition hover:text-blush-dark">Our Story</a>
+                @if (count($adventurePhotos))
+                    <a href="#adventures" class="transition hover:text-blush-dark">Our Adventures</a>
+                @endif
                 <a href="#details" class="transition hover:text-blush-dark">Details</a>
                 <a href="#schedule" class="transition hover:text-blush-dark">Schedule</a>
             </div>
@@ -133,33 +144,38 @@
 
     <main>
         {{-- Hero --}}
-        <section id="top" class="relative overflow-hidden px-6 pt-28 pb-6 sm:pb-20 lg:flex lg:min-h-svh lg:items-center lg:pt-24">
+        <section id="top" class="relative isolate overflow-hidden px-6 pt-28 pb-6 sm:pb-20 lg:flex lg:min-h-svh lg:items-center lg:pt-24">
+            <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+                <img src="{{ asset('images/hero-sky.jpg') }}" alt="" class="size-full object-cover object-[center_70%]" fetchpriority="high" />
+                <div class="absolute inset-0 bg-ivory/30"></div>
+                <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ivory to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ivory to-transparent sm:h-40"></div>
+            </div>
             <x-wedding.sprig class="pointer-events-none absolute top-16 -left-10 h-[28rem] w-40 -rotate-[28deg] text-moss/15 sm:left-4" />
             <x-wedding.posy class="pointer-events-none absolute top-[55%] left-[38%] hidden w-48 text-moss/10 lg:block" />
             <div class="pointer-events-none absolute -top-40 -left-40 size-[36rem] rounded-full bg-blush/15 blur-3xl"></div>
 
-            <div x-data="dove(@js(config('wedding.dove_notes')))" class="bird-sky pointer-events-none absolute inset-0 z-10">
-                <div x-ref="flier" class="absolute top-0 left-0 will-change-transform" style="transform: translate(-200px, 0)">
-                    <button
-                        type="button"
-                        @click="greet()"
-                        class="block cursor-pointer focus:outline-none"
-                        :class="leaving ? 'pointer-events-none' : 'pointer-events-auto bird-respawn'"
-                        aria-label="Say hello to the eagle"
-                        data-test="bird"
-                    >
-                        <span x-ref="pose" class="block">
-                            <x-wedding.bird class="w-20 drop-shadow-[0_6px_8px_rgb(51_64_79/0.2)] sm:w-28" />
-                        </span>
-                    </button>
-                </div>
+            <div x-data="bubbles(@js(config('wedding.bubble_notes')))" class="bubble-sky pointer-events-none absolute inset-0 z-10">
+                <template x-for="(bubble, index) in bubbles" :key="index">
+                    <div :data-bubble="index" class="absolute top-0 left-0 will-change-transform" style="transform: translate(-200px, 0)">
+                        <button
+                            type="button"
+                            @click="pop(index)"
+                            class="block cursor-pointer rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-moss/50 focus-visible:ring-offset-2"
+                            :class="bubble.popped ? 'bubble-popped pointer-events-none' : 'pointer-events-auto bubble-respawn'"
+                            aria-label="Pop the bubble"
+                            data-test="bubble"
+                        >
+                            <span class="bubble block aspect-square rounded-full" :class="index === 0 ? 'w-14 sm:w-20' : 'w-10 sm:w-14'"></span>
+                        </button>
+                    </div>
+                </template>
 
-                <template x-if="burst">
+                <template x-for="burst in bursts" :key="burst.id">
                     <span class="absolute" :style="`left: ${burst.x}px; top: ${burst.y}px`">
-                        @foreach (range(0, 9) as $particle)
-                            <span class="bird-particle absolute" style="--angle: {{ $particle * 36 + ($particle % 2) * 12 }}deg; --distance: {{ 44 + ($particle % 3) * 18 }}px;">
-                                <svg viewBox="0 0 20 18" class="{{ $particle % 2 ? 'w-2.5' : 'w-3.5' }}" aria-hidden="true"><path d="M10 17C4 12 0 9 0 5A5 5 0 0 1 10 3a5 5 0 0 1 10 2c0 4-4 7-10 12Z" fill="{{ $particle % 3 ? '#dcb7ab' : '#6b84a0' }}" /></svg>
-                            </span>
+                        <span class="bubble-ring absolute block size-14 rounded-full border-2 border-white/80"></span>
+                        @foreach (range(0, 7) as $droplet)
+                            <span class="bubble-particle absolute block rounded-full {{ $droplet % 2 ? 'size-1.5' : 'size-2.5' }}" style="--angle: {{ $droplet * 45 + ($droplet % 2) * 15 }}deg; --distance: {{ 34 + ($droplet % 3) * 14 }}px; background: {{ $droplet % 3 ? 'rgb(220 183 171 / 0.8)' : 'rgb(107 132 160 / 0.7)' }};"></span>
                         @endforeach
                     </span>
                 </template>
@@ -170,11 +186,11 @@
                             <button
                                 type="button"
                                 @click="note = null"
-                                class="dove-note absolute z-30 w-64 cursor-pointer border border-gold/60 bg-ivory/95 px-5 py-4 text-left shadow-[0_20px_40px_-20px_rgb(51_64_79/0.45)] backdrop-blur-sm"
+                                class="bubble-note absolute z-30 w-64 cursor-pointer border border-gold/60 bg-ivory/95 px-5 py-4 text-left shadow-[0_20px_40px_-20px_rgb(51_64_79/0.45)] backdrop-blur-sm"
                                 :style="`left: ${note.x}px; top: ${note.y}px`"
-                                data-test="dove-note"
+                                data-test="bubble-note"
                             >
-                                <span class="block font-sans text-[0.55rem] uppercase tracking-[0.35em] text-blush-dark">A note from the eagle</span>
+                                <span class="block font-sans text-[0.55rem] uppercase tracking-[0.35em] text-blush-dark">A little note</span>
                                 <span class="mt-2 block text-lg leading-snug italic text-ink" x-text="note.text"></span>
                             </button>
                         </template>
@@ -367,6 +383,148 @@
                 </figure>
             </div>
         </section>
+
+        {{-- Our adventures --}}
+        @if (count($adventurePhotos))
+            <section id="adventures" class="scroll-mt-16 overflow-hidden bg-linen/40 py-24 sm:py-32" data-test="our-adventures">
+                <x-wedding.section-heading class="px-6" :eyebrow="$adventurePhotos[0]['taken_on']->format('Y').' — today'" title="Our Adventures">
+                    Islands, temples, sunrises and a lot of selfies. Every trip brought us a little closer to this one.
+                </x-wedding.section-heading>
+
+                <div
+                    x-data="{
+                        current: {{ $adventureStartIndex }},
+                        total: {{ count($adventurePhotos) }},
+                        startX: null,
+                        swiped: false,
+                        loaded: Array.from({ length: {{ count($adventurePhotos) }} }, (_, index) => @js($preloadedAdventureIndexes).includes(index)),
+                        offset(index) {
+                            let distance = (index - this.current) % this.total;
+                            if (distance > this.total / 2) distance -= this.total;
+                            if (distance < -this.total / 2) distance += this.total;
+
+                            return distance;
+                        },
+                        slideStyle(index) {
+                            const distance = this.offset(index);
+                            const steps = { 0: [0, 1, 1, 30], 1: [78, 0.8, 0.85, 20], 2: [145, 0.64, 0.5, 10] };
+                            const [shift, scale, opacity, layer] = steps[Math.abs(distance)] ?? [200, 0.5, 0, 0];
+
+                            return {
+                                transform: `translateX(${Math.sign(distance) * shift}%) scale(${scale})`,
+                                opacity,
+                                zIndex: layer,
+                                pointerEvents: opacity === 0 ? 'none' : 'auto',
+                            };
+                        },
+                        go(index) {
+                            this.current = ((index % this.total) + this.total) % this.total;
+
+                            for (let step = -2; step <= 2; step++) {
+                                this.loaded[(this.current + step + this.total) % this.total] = true;
+                            }
+                        },
+                        next() { this.go(this.current + 1) },
+                        prev() { this.go(this.current - 1) },
+                        startSwipe(event) {
+                            this.startX = event.clientX;
+                            this.swiped = false;
+                        },
+                        endSwipe(event) {
+                            if (this.startX === null) return;
+                            const distance = event.clientX - this.startX;
+                            this.startX = null;
+
+                            if (Math.abs(distance) > 40) {
+                                this.swiped = true;
+                                distance < 0 ? this.next() : this.prev();
+                            }
+                        },
+                    }"
+                    class="reveal relative mt-14 px-6 focus:outline-none"
+                    x-intersect.once="$el.classList.add('is-visible')"
+                    @keydown.arrow-right.prevent="next()"
+                    @keydown.arrow-left.prevent="prev()"
+                    tabindex="0"
+                    role="region"
+                    aria-roledescription="carousel"
+                    aria-label="Photos of our adventures together"
+                >
+                    <ol
+                        class="relative mx-auto aspect-[4/5] w-[62%] touch-pan-y select-none sm:w-[38%] lg:w-[26%]"
+                        @pointerdown="startSwipe($event)"
+                        @pointerup.window="endSwipe($event)"
+                        @pointercancel.window="startX = null"
+                    >
+                        @foreach ($adventurePhotos as $photo)
+                            <li
+                                class="absolute inset-0 origin-center transition-[transform,opacity] duration-600 ease-out"
+                                style="{{ $loop->index === $adventureStartIndex ? '' : 'opacity: 0;' }}"
+                                :style="slideStyle({{ $loop->index }})"
+                                :class="offset({{ $loop->index }}) !== 0 && 'cursor-pointer'"
+                                :aria-hidden="(offset({{ $loop->index }}) !== 0).toString()"
+                                @click="if (! swiped && offset({{ $loop->index }}) !== 0) go({{ $loop->index }})"
+                                aria-roledescription="slide"
+                                aria-label="{{ $loop->iteration }} of {{ $loop->count }}"
+                            >
+                                <div
+                                    class="photo-frame size-full bg-linen transition-shadow duration-500"
+                                    :class="offset({{ $loop->index }}) === 0 ? 'shadow-[0_30px_60px_-25px_rgb(51_64_79/0.7)]' : 'shadow-[0_15px_30px_-20px_rgb(51_64_79/0.4)]'"
+                                >
+                                    <img
+                                        @if (in_array($loop->index, $preloadedAdventureIndexes, true)) src="{{ $photo['url'] }}" @endif
+                                        :src="loaded[{{ $loop->index }}] ? @js($photo['url']) : null"
+                                        alt="{{ $wedding->coupleNames() }}, {{ $photo['caption'] ? $photo['caption'].', ' : '' }}{{ $photo['taken_on']->format('F Y') }}"
+                                        class="pointer-events-none size-full object-cover"
+                                        decoding="async"
+                                        draggable="false"
+                                    />
+                                </div>
+                            </li>
+                        @endforeach
+                    </ol>
+
+                    <div class="mt-8 grid min-h-12 text-center">
+                        @foreach ($adventurePhotos as $photo)
+                            <div class="[grid-area:1/1]" x-show="current === {{ $loop->index }}" @unless ($loop->index === $adventureStartIndex) x-cloak @endunless x-transition.opacity.duration.400ms>
+                                <p class="font-sans text-[0.65rem] uppercase tracking-[0.3em] text-blush-dark">{{ $photo['taken_on']->format('F Y') }}</p>
+                                @if ($photo['caption'])
+                                    <p class="mt-1 font-display text-xl text-moss-dark">{{ $photo['caption'] }}</p>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-center gap-6">
+                        <button
+                            type="button"
+                            @click="prev()"
+                            class="flex size-11 cursor-pointer items-center justify-center rounded-full border border-moss/30 bg-ivory text-moss-dark transition hover:bg-moss-dark hover:text-ivory"
+                            aria-label="Previous photo"
+                        >
+                            <flux:icon.chevron-left variant="micro" />
+                        </button>
+
+                        <p class="min-w-20 text-center font-sans text-xs tabular-nums tracking-[0.25em] text-ink-soft" aria-live="polite">
+                            <span x-text="String(current + 1).padStart(2, '0')">{{ str_pad((string) ($adventureStartIndex + 1), 2, '0', STR_PAD_LEFT) }}</span>
+                            <span class="text-gold">/</span>
+                            {{ str_pad((string) count($adventurePhotos), 2, '0', STR_PAD_LEFT) }}
+                        </p>
+
+                        <button
+                            type="button"
+                            @click="next()"
+                            class="flex size-11 cursor-pointer items-center justify-center rounded-full border border-moss/30 bg-ivory text-moss-dark transition hover:bg-moss-dark hover:text-ivory"
+                            aria-label="Next photo"
+                        >
+                            <flux:icon.chevron-right variant="micro" />
+                        </button>
+                    </div>
+
+                    <p class="mt-4 text-center font-sans text-[0.6rem] uppercase tracking-[0.3em] text-ink-soft/70 sm:hidden">Swipe to see more</p>
+                </div>
+            </section>
+        @endif
 
         {{-- Ceremony & reception --}}
         <section id="details" class="scroll-mt-16 bg-paper/70 px-6 py-24 sm:py-32">

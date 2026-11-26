@@ -82,6 +82,51 @@ class Wedding
     }
 
     /**
+     * Get the "Our Adventures" photos that exist and have a date, oldest first.
+     *
+     * @return list<array{url: string, caption: ?string, taken_on: CarbonImmutable, featured: bool}>
+     */
+    public function adventurePhotos(): array
+    {
+        $photos = [];
+
+        foreach (config('wedding.adventures', []) as $photo) {
+            $url = $this->publicAssetUrl($photo['path'] ?? null);
+
+            if ($url === null || blank($photo['taken_on'] ?? null)) {
+                continue;
+            }
+
+            $photos[] = [
+                'url' => $url,
+                'caption' => $photo['caption'] ?? null,
+                'taken_on' => $this->parse($photo['taken_on']),
+                'featured' => (bool) ($photo['featured'] ?? false),
+            ];
+        }
+
+        usort($photos, fn (array $first, array $second): int => $first['taken_on'] <=> $second['taken_on']);
+
+        return $photos;
+    }
+
+    /**
+     * Get the position of the featured "Our Adventures" photo the carousel opens on, or 0 when none is featured.
+     *
+     * @param  list<array{url: string, caption: ?string, taken_on: CarbonImmutable, featured: bool}>  $photos
+     */
+    public function featuredAdventureIndex(array $photos): int
+    {
+        foreach ($photos as $index => $photo) {
+            if ($photo['featured']) {
+                return $index;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
      * Get the URL of the link preview picture, falling back to the first photo, or null when neither exists.
      */
     public function ogImageUrl(): ?string
