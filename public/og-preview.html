@@ -8,110 +8,154 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #fff; }
     .card {
-        width: 1200px; height: 630px; overflow: hidden; zoom: 0.75;
+        width: 1200px; height: 630px; overflow: hidden; position: relative;
         background:
-            radial-gradient(ellipse at 50% 45%, #fbf8f2 0%, #f5efe4 70%, #ebe3d4 100%);
-        color: #3a4136;
+            radial-gradient(ellipse 70% 80% at 50% 48%, #fdfbf7 0%, #fbf8f2 45%, #f5efe4 80%, #ede5d6 100%);
+        color: #33404f;
         font-family: 'Cormorant Garamond', serif;
-        position: relative;
     }
-    .frame {
-        position: absolute; inset: 28px;
-        border: 1.5px solid #c9b18a;
-    }
-    .frame::after {
-        content: ''; position: absolute; inset: 8px;
-        border: 1px solid rgba(201, 177, 138, .55);
-    }
-    .sprig { position: absolute; width: 230px; height: 230px; }
-    .sprig.tl { top: -14px; left: -14px; }
-    .sprig.br { bottom: -14px; right: -14px; transform: rotate(180deg); }
+    .grain { position: absolute; inset: 0; opacity: .35; mix-blend-mode: multiply; }
+    .frame { position: absolute; inset: 30px; border: 1.25px solid #c9b18a; }
+    .frame::after { content: ''; position: absolute; inset: 7px; border: .75px solid rgba(201, 177, 138, .6); }
+    .corner { position: absolute; width: 9px; height: 9px; background: #c9b18a; transform: rotate(45deg); }
+    .corner.tl { top: 26px; left: 26px; } .corner.tr { top: 26px; right: 26px; }
+    .corner.bl { bottom: 26px; left: 26px; } .corner.br { bottom: 26px; right: 26px; }
+    .bouquet { position: absolute; width: 400px; height: 400px; }
+    .bouquet.tl { top: -84px; left: -78px; }
+    .bouquet.br { bottom: -84px; right: -78px; transform: rotate(180deg); }
     .content {
         position: absolute; inset: 0;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
-        text-align: center;
+        text-align: center; padding-top: 6px;
     }
+    .monogram {
+        font-family: 'Marcellus', serif; font-size: 22px; letter-spacing: .3em; color: #b39a72;
+        display: flex; align-items: center; gap: 14px; padding-left: .3em;
+    }
+    .monogram i { width: 6px; height: 6px; background: #c9b18a; transform: rotate(45deg); }
     .eyebrow {
         font-family: 'Montserrat', sans-serif; font-weight: 600;
-        font-size: 17px; letter-spacing: .42em; text-transform: uppercase;
-        color: #6f7d62; margin-bottom: 6px;
+        font-size: 15px; letter-spacing: .46em; text-transform: uppercase;
+        color: #69727e; margin-top: 22px; padding-left: .46em;
     }
     .names {
-        font-family: 'Pinyon Script', cursive;
-        font-size: 104px; line-height: 1.15; color: #3f4a3a;
-        display: flex; align-items: baseline; gap: 22px;
+        font-family: 'Pinyon Script', cursive; font-weight: 400;
+        font-size: 124px; line-height: 1; color: #2c3846;
+        margin-top: 18px; display: flex; align-items: baseline; gap: 26px;
     }
-    .names .amp { font-size: 76px; color: #a8776b; }
-    .divider { display: flex; align-items: center; gap: 18px; margin: 14px 0 22px; }
-    .divider span { width: 120px; height: 1px; background: #c9b18a; }
-    .divider i { width: 9px; height: 9px; background: #c9b18a; transform: rotate(45deg); }
+    .names .amp { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: 92px; color: #a8776b; transform: translateY(-4px); }
+    .rule { display: flex; align-items: center; gap: 16px; margin: 26px 0 24px; }
+    .rule span { width: 170px; height: 1.25px; }
+    .rule span:first-child { background: linear-gradient(90deg, transparent, #c9b18a); }
+    .rule span:last-child { background: linear-gradient(90deg, #c9b18a, transparent); }
+    .rule i { width: 9px; height: 9px; background: #c9b18a; transform: rotate(45deg); }
     .date {
-        font-family: 'Marcellus', serif;
-        font-size: 40px; letter-spacing: .22em; color: #3a4136;
+        font-family: 'Marcellus', serif; font-size: 30px; letter-spacing: .32em; color: #33404f;
+        padding-left: .32em;
     }
-    .place {
-        font-style: italic; font-size: 30px; color: #6d7166; margin-top: 10px;
-    }
-    .hashtag {
-        font-family: 'Montserrat', sans-serif; font-weight: 500;
-        font-size: 16px; letter-spacing: .2em; color: #a8776b; margin-top: 26px;
-    }
+    .date b { font-weight: 400; color: #c9b18a; margin: 0 .25em; }
+    .place { font-style: italic; font-size: 27px; color: #69727e; margin-top: 12px; }
 </style>
 </head>
 <body>
 <div class="card">
-    <div class="frame"></div>
-
-    <svg class="sprig tl" viewBox="0 0 300 300" fill="none">
-        <path d="M30 40 C 110 70, 170 120, 230 230" stroke="#6f7d62" stroke-width="2.2" stroke-linecap="round"/>
-        <g fill="#9aa88a">
-            <ellipse cx="70" cy="58" rx="22" ry="9" transform="rotate(-20 70 58)"/>
-            <ellipse cx="62" cy="80" rx="22" ry="9" transform="rotate(55 62 80)"/>
-            <ellipse cx="112" cy="82" rx="24" ry="10" transform="rotate(-10 112 82)"/>
-            <ellipse cx="100" cy="108" rx="24" ry="10" transform="rotate(60 100 108)"/>
-            <ellipse cx="152" cy="118" rx="24" ry="10" transform="rotate(5 152 118)"/>
-            <ellipse cx="136" cy="144" rx="24" ry="10" transform="rotate(70 136 144)"/>
-            <ellipse cx="186" cy="162" rx="22" ry="9" transform="rotate(20 186 162)"/>
-            <ellipse cx="168" cy="186" rx="22" ry="9" transform="rotate(80 168 186)"/>
-        </g>
-        <g fill="#dcb7ab">
-            <circle cx="40" cy="44" r="14"/>
-            <circle cx="216" cy="206" r="10"/>
-        </g>
-        <g fill="#a8776b" opacity=".7">
-            <circle cx="40" cy="44" r="5"/>
-            <circle cx="216" cy="206" r="4"/>
-        </g>
+    <svg class="grain" width="1200" height="630">
+        <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .5  0 0 0 0 .42  0 0 0 .09 0"/></filter>
+        <rect width="100%" height="100%" filter="url(#n)"/>
     </svg>
-    <svg class="sprig br" viewBox="0 0 300 300" fill="none">
-        <path d="M30 40 C 110 70, 170 120, 230 230" stroke="#6f7d62" stroke-width="2.2" stroke-linecap="round"/>
-        <g fill="#9aa88a">
-            <ellipse cx="70" cy="58" rx="22" ry="9" transform="rotate(-20 70 58)"/>
-            <ellipse cx="62" cy="80" rx="22" ry="9" transform="rotate(55 62 80)"/>
-            <ellipse cx="112" cy="82" rx="24" ry="10" transform="rotate(-10 112 82)"/>
-            <ellipse cx="100" cy="108" rx="24" ry="10" transform="rotate(60 100 108)"/>
-            <ellipse cx="152" cy="118" rx="24" ry="10" transform="rotate(5 152 118)"/>
-            <ellipse cx="136" cy="144" rx="24" ry="10" transform="rotate(70 136 144)"/>
-            <ellipse cx="186" cy="162" rx="22" ry="9" transform="rotate(20 186 162)"/>
-            <ellipse cx="168" cy="186" rx="22" ry="9" transform="rotate(80 168 186)"/>
+
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <filter id="wash" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2"/></filter>
+            <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+            <g id="bloom">
+                <g filter="url(#wash)">
+                    <ellipse cx="0" cy="-15" rx="15" ry="20" fill="#e3b9b4" opacity=".85"/>
+                    <ellipse cx="14" cy="-4" rx="15" ry="19" fill="#d8a7a7" opacity=".85" transform="rotate(72)"/>
+                    <ellipse cx="9" cy="13" rx="15" ry="19" fill="#e6c2bd" opacity=".85" transform="rotate(144)"/>
+                    <ellipse cx="-9" cy="13" rx="15" ry="19" fill="#d8a7a7" opacity=".8" transform="rotate(216)"/>
+                    <ellipse cx="-14" cy="-4" rx="15" ry="19" fill="#e3b9b4" opacity=".85" transform="rotate(288)"/>
+                </g>
+                <circle r="9" fill="#f2d4d0"/>
+                <circle r="5" fill="#c9b18a" opacity=".8"/>
+            </g>
+            <g id="leaf"><path d="M0 0 C 10 -9, 30 -9, 42 0 C 30 9, 10 9, 0 0 Z"/></g>
+        </defs>
+    </svg>
+
+    <div class="frame"></div>
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+
+    <svg class="bouquet tl" viewBox="0 0 360 360">
+        <circle cx="140" cy="140" r="90" fill="#e8d9b5" opacity=".45" filter="url(#soft)"/>
+        <g fill="none" stroke="#8fa8b8" stroke-width="1.6" stroke-linecap="round">
+            <path d="M120 120 C 180 140, 230 175, 285 240"/>
+            <path d="M120 120 C 150 175, 175 225, 190 290"/>
+            <path d="M120 120 C 170 110, 220 108, 280 118"/>
         </g>
-        <g fill="#dcb7ab">
-            <circle cx="40" cy="44" r="14"/>
-            <circle cx="216" cy="206" r="10"/>
+        <g fill="#9fb1c4" opacity=".85">
+            <use href="#leaf" transform="translate(190 150) rotate(40)"/>
+            <use href="#leaf" transform="translate(215 175) rotate(-15)"/>
+            <use href="#leaf" transform="translate(245 205) rotate(55)"/>
+            <use href="#leaf" transform="translate(150 185) rotate(95)"/>
+            <use href="#leaf" transform="translate(168 228) rotate(60)"/>
+            <use href="#leaf" transform="translate(205 112) rotate(-30)"/>
+            <use href="#leaf" transform="translate(240 112) rotate(15)"/>
         </g>
-        <g fill="#a8776b" opacity=".7">
-            <circle cx="40" cy="44" r="5"/>
-            <circle cx="216" cy="206" r="4"/>
+        <g fill="#c9b18a" opacity=".7">
+            <use href="#leaf" transform="translate(178 210) rotate(10) scale(.75)"/>
+            <use href="#leaf" transform="translate(228 140) rotate(80) scale(.75)"/>
+            <use href="#leaf" transform="translate(262 230) rotate(20) scale(.7)"/>
         </g>
+        <g fill="#c9b18a">
+            <circle cx="285" cy="240" r="3.5"/><circle cx="190" cy="290" r="3"/><circle cx="280" cy="118" r="3"/>
+            <circle cx="262" cy="128" r="2.2"/><circle cx="196" cy="268" r="2.2"/>
+        </g>
+        <use href="#bloom" transform="translate(140 132) scale(1.35)"/>
+        <use href="#bloom" transform="translate(186 172) scale(.85) rotate(30)"/>
+        <use href="#bloom" transform="translate(108 186) scale(.7) rotate(60)"/>
+        <circle cx="222" cy="150" r="7" fill="#8fa8b8" opacity=".7"/>
+        <circle cx="160" cy="222" r="6" fill="#8fa8b8" opacity=".6"/>
+    </svg>
+    <svg class="bouquet br" viewBox="0 0 360 360">
+        <circle cx="140" cy="140" r="90" fill="#e8d9b5" opacity=".45" filter="url(#soft)"/>
+        <g fill="none" stroke="#8fa8b8" stroke-width="1.6" stroke-linecap="round">
+            <path d="M120 120 C 180 140, 230 175, 285 240"/>
+            <path d="M120 120 C 150 175, 175 225, 190 290"/>
+            <path d="M120 120 C 170 110, 220 108, 280 118"/>
+        </g>
+        <g fill="#9fb1c4" opacity=".85">
+            <use href="#leaf" transform="translate(190 150) rotate(40)"/>
+            <use href="#leaf" transform="translate(215 175) rotate(-15)"/>
+            <use href="#leaf" transform="translate(245 205) rotate(55)"/>
+            <use href="#leaf" transform="translate(150 185) rotate(95)"/>
+            <use href="#leaf" transform="translate(168 228) rotate(60)"/>
+            <use href="#leaf" transform="translate(205 112) rotate(-30)"/>
+            <use href="#leaf" transform="translate(240 112) rotate(15)"/>
+        </g>
+        <g fill="#c9b18a" opacity=".7">
+            <use href="#leaf" transform="translate(178 210) rotate(10) scale(.75)"/>
+            <use href="#leaf" transform="translate(228 140) rotate(80) scale(.75)"/>
+            <use href="#leaf" transform="translate(262 230) rotate(20) scale(.7)"/>
+        </g>
+        <g fill="#c9b18a">
+            <circle cx="285" cy="240" r="3.5"/><circle cx="190" cy="290" r="3"/><circle cx="280" cy="118" r="3"/>
+            <circle cx="262" cy="128" r="2.2"/><circle cx="196" cy="268" r="2.2"/>
+        </g>
+        <use href="#bloom" transform="translate(140 132) scale(1.35)"/>
+        <use href="#bloom" transform="translate(186 172) scale(.85) rotate(30)"/>
+        <use href="#bloom" transform="translate(108 186) scale(.7) rotate(60)"/>
+        <circle cx="222" cy="150" r="7" fill="#8fa8b8" opacity=".7"/>
+        <circle cx="160" cy="222" r="6" fill="#8fa8b8" opacity=".6"/>
     </svg>
 
     <div class="content">
+        <p class="monogram">B<i></i>M</p>
         <p class="eyebrow">We're getting married</p>
         <h1 class="names"><span>Benjie</span><span class="amp">&amp;</span><span>Monaliza</span></h1>
-        <div class="divider"><span></span><i></i><span></span></div>
-        <p class="date">JANUARY 30, 2027</p>
-        <p class="place">Panabo City, Davao del Norte</p>
-        <p class="hashtag">#BenjieAndMonalizaMerged</p>
+        <div class="rule"><span></span><i></i><span></span></div>
+        <p class="date">SATURDAY<b>·</b>JANUARY 30<b>·</b>2027</p>
+        <p class="place">San Pedro Parish · Panabo City, Davao del Norte</p>
     </div>
 </div>
 </body>
