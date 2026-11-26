@@ -58,3 +58,37 @@ test('refreshDoesNotRetryARequestFacebookRejects', function () {
 
     Http::assertSentCount(1);
 });
+
+test('refreshLinkPreviewsCommandAsksFacebookToScrapeTheHomePageAndEveryInvitation', function () {
+    Bus::fake([RefreshInvitationLinkPreview::class]);
+    $invitations = Invitation::factory()->count(2)->create();
+    Http::preventStrayRequests();
+    Http::fake(['graph.facebook.com/*' => Http::response(['id' => 'ok'])]);
+
+    $this->artisan('app:refresh-link-previews')->assertSuccessful();
+
+    $scrapedUrls = Http::recorded()->map(fn (array $exchange): string => $exchange[0]['id'])->all();
+    expect($scrapedUrls)->toEqualCanonicalizing([
+        route('home'),
+        route('invitation.show', $invitations[0]),
+        route('invitation.show', $invitations[1]),
+    ]);
+});
+
+test('refreshLinkPreviewsCommandFailsWhenFacebookRejectsALink', function () {
+    Http::preventStrayRequests();
+    Http::fake(['graph.facebook.com/*' => Http::response(['error' => 'Invalid OAuth access token'], 400)]);
+
+    $this->artisan('app:refresh-link-previews')
+        ->expectsOutputToContain('could not refresh 1 link(s)')
+        ->assertFailed();
+});
+
+test('refreshLinkPreviewsCommandFailsWhenFacebookIsNotConfigured', function () {
+    config()->set('services.facebook.app_secret', null);
+    Http::preventStrayRequests();
+
+    $this->artisan('app:refresh-link-previews')
+        ->expectsOutputToContain('FACEBOOK_APP_ID')
+        ->assertFailed();
+});
