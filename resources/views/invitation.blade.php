@@ -15,9 +15,9 @@
 
     $heroPhotoSets = $wedding->heroPhotoSets();
     $heroPanels = [
-        ['eyebrow' => 'Save the date', 'title' => $ceremonyStartsAt->format('m · d · Y'), 'tone' => 'from-moss-light via-paper to-linen', 'frame' => 'z-0 mt-16 -mr-3 sm:-mr-4', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 10, 'float' => 'animation-duration: 7s; animation-delay: 0s', 'shine' => '0s'],
-        ['eyebrow' => 'Forever begins', 'title' => $wedding->monogram(), 'tone' => 'from-blush/60 via-paper to-ivory', 'frame' => 'z-20', 'shadow' => 'shadow-[0_35px_60px_-25px_rgb(51_64_79/0.7)]', 'depth' => 24, 'float' => 'animation-duration: 9s; animation-delay: -3s', 'shine' => '2.5s', 'script' => true],
-        ['eyebrow' => 'Panabo City', 'title' => config('wedding.ceremony.name'), 'tone' => 'from-sage/45 via-paper to-linen', 'frame' => 'z-10 mt-28 -ml-4 sm:-ml-5', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 16, 'float' => 'animation-duration: 8s; animation-delay: -5s', 'shine' => '5s'],
+        ['eyebrow' => 'Save the date', 'title' => $ceremonyStartsAt->format('m · d · Y'), 'tone' => 'from-moss-light via-paper to-linen', 'frame' => 'z-10 -mr-3 sm:-mr-4', 'aspect' => 'aspect-[2/3]', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 14, 'float' => 'animation-duration: 8s; animation-delay: 0s', 'shine' => '0s'],
+        ['eyebrow' => 'Forever begins', 'title' => $wedding->monogram(), 'tone' => 'from-blush/60 via-paper to-ivory', 'frame' => 'z-20', 'aspect' => 'aspect-[3/5]', 'shadow' => 'shadow-[0_35px_60px_-25px_rgb(51_64_79/0.7)]', 'depth' => 24, 'float' => 'animation-duration: 9s; animation-delay: -3s', 'shine' => '2.5s', 'script' => true],
+        ['eyebrow' => 'Panabo City', 'title' => config('wedding.ceremony.name'), 'tone' => 'from-sage/45 via-paper to-linen', 'frame' => 'z-10 -ml-3 sm:-ml-4', 'aspect' => 'aspect-[2/3]', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 14, 'float' => 'animation-duration: 8s; animation-delay: -4s', 'shine' => '5s'],
     ];
 @endphp
 
@@ -248,7 +248,7 @@
                     </div>
                 </div>
 
-                <div class="relative mx-auto grid w-full max-w-sm grid-cols-[0.85fr_1.2fr_0.95fr] items-start px-4 sm:max-w-lg sm:px-0 lg:max-w-none" x-data="heroPhotos(@js($heroPhotoSets))" x-intersect:enter="isVisible = true" x-intersect:leave="isVisible = false">
+                <div class="relative mx-auto grid w-full max-w-sm grid-cols-[1fr_1.2fr_1fr] items-center px-4 sm:max-w-lg sm:px-0 lg:max-w-none" x-data="heroPhotos(@js($heroPhotoSets))" x-intersect:enter="isVisible = true" x-intersect:leave="isVisible = false">
                     @foreach ($heroPanels as $index => $panel)
                         <figure
                             class="reveal relative {{ $panel['frame'] }}"
@@ -257,7 +257,7 @@
                             x-intersect.once="$el.classList.add('is-visible')"
                         >
                             <div class="hero-parallax" style="--depth: {{ $panel['depth'] }}">
-                                <div class="hero-float photo-frame aspect-[3/5] bg-linen transition-transform duration-700 motion-safe:hover:scale-[1.03] {{ $panel['shadow'] }}" style="{{ $panel['float'] }}">
+                                <div class="hero-float photo-frame {{ $panel['aspect'] }} bg-linen transition-transform duration-700 motion-safe:hover:scale-[1.03] {{ $panel['shadow'] }}" style="{{ $panel['float'] }}">
                                     @if ($heroPhotoSets[$index] !== [])
                                         <div class="absolute inset-0 isolate">
                                             @foreach ($heroPhotoSets[$index] as $photoIndex => $photoUrl)
@@ -286,9 +286,9 @@
                         </figure>
                     @endforeach
 
-                    <x-wedding.posy class="pointer-events-none absolute top-6 -left-2 z-30 w-16 text-blush-dark/80 sm:-left-6 sm:w-28" />
-                    <x-wedding.sprig class="pointer-events-none absolute right-0 bottom-10 z-30 h-28 w-10 rotate-[200deg] text-moss/70 sm:-right-2 sm:h-36 sm:w-14" />
-                    <x-wedding.posy class="pointer-events-none absolute top-[80%] left-[28%] z-30 w-12 -scale-x-100 text-gold sm:w-24" />
+                    <x-wedding.posy class="pointer-events-none absolute top-[10%] -left-2 z-30 w-16 text-blush-dark/80 sm:-left-6 sm:w-28" />
+                    <x-wedding.sprig class="pointer-events-none absolute right-0 bottom-[8%] z-30 h-28 w-10 rotate-[200deg] text-moss/70 sm:-right-2 sm:h-36 sm:w-14" />
+                    <x-wedding.posy class="pointer-events-none absolute top-[78%] left-[26%] z-30 w-12 -scale-x-100 text-gold sm:w-24" />
                 </div>
             </div>
         </section>
@@ -581,13 +581,13 @@
         <section id="schedule" class="scroll-mt-16 px-6 py-24 sm:py-32">
             <x-wedding.section-heading eyebrow="Order of the day" title="Schedule" />
 
-            <ol class="relative mx-auto mt-16 max-w-2xl">
-                <span class="absolute top-2 bottom-2 left-[5.5rem] w-px bg-gold/70 sm:left-1/2"></span>
+            <ol class="relative mx-auto mt-16 w-fit max-w-xl">
+                <span class="absolute top-2 bottom-2 left-[6.75rem] w-px -translate-x-1/2 bg-gold/70 sm:left-[9rem]"></span>
 
                 @foreach (config('wedding.timeline') as $moment)
-                    <li class="reveal relative grid grid-cols-[5rem_1fr] gap-8 pb-12 last:pb-0 sm:grid-cols-2 sm:gap-16" x-data x-intersect.once="$el.classList.add('is-visible')">
-                        <span class="absolute top-2 left-[5.5rem] size-3 -translate-x-1/2 rotate-45 border border-blush-dark bg-ivory ring-4 ring-ivory sm:left-1/2"></span>
-                        <p class="pt-0.5 text-right font-sans text-xs uppercase tracking-[0.2em] text-blush-dark">{{ $moment['time'] }}</p>
+                    <li class="reveal relative grid grid-cols-[5.5rem_1fr] gap-x-10 pb-12 last:pb-0 sm:grid-cols-[7rem_1fr] sm:gap-x-16" x-data x-intersect.once="$el.classList.add('is-visible')">
+                        <span class="absolute top-2 left-[6.75rem] size-3 -translate-x-1/2 rotate-45 border border-blush-dark bg-ivory ring-4 ring-ivory sm:left-[9rem]"></span>
+                        <p class="whitespace-nowrap pt-0.5 text-right font-sans text-xs uppercase tracking-[0.2em] text-blush-dark">{{ $moment['time'] }}</p>
                         <div>
                             <p class="font-display text-2xl text-moss-dark">{{ $moment['title'] }}</p>
                             <p class="mt-1 text-base text-ink-soft">{{ $moment['description'] }}</p>
