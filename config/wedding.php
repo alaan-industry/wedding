@@ -159,8 +159,9 @@ return [
     /*
     | Photos from our trips together, shown oldest first in the "Our Adventures"
     | carousel. Each needs a path inside the public folder and the date it
-    | was taken; the caption (e.g. the place) is optional. Photos that do
-    | not exist are skipped, and the section hides when none exist.
+    | was taken; the caption (e.g. the place) is optional. Mark one photo
+    | 'featured' to show it in the centre when the page opens. Photos that
+    | do not exist are skipped, and the section hides when none exist.
     */
 
     'adventures' => [
@@ -169,7 +170,7 @@ return [
         ['path' => 'images/adventures/03-2020-01.jpg', 'taken_on' => '2020-01-03', 'caption' => null],
         ['path' => 'images/adventures/04-2020-01.jpg', 'taken_on' => '2020-01-03', 'caption' => null],
         ['path' => 'images/adventures/05-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
-        ['path' => 'images/adventures/06-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
+        ['path' => 'images/adventures/06-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null, 'featured' => true],
         ['path' => 'images/adventures/07-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
         ['path' => 'images/adventures/08-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],
         ['path' => 'images/adventures/09-2020-01.jpg', 'taken_on' => '2020-01-09', 'caption' => null],

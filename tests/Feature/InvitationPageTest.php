@@ -152,6 +152,31 @@ test('ourAdventuresCarouselShowsOnlyThePhotosThatWereAdded', function () {
         ->assertDontSee('November 2023');
 });
 
+test('ourAdventuresCarouselOpensOnTheFeaturedPhoto', function () {
+    config(['wedding.adventures' => [
+        ['path' => 'robots.txt', 'taken_on' => '2020-01-09', 'caption' => 'Bali', 'featured' => true],
+        ['path' => 'favicon.svg', 'taken_on' => '2018-08-05', 'caption' => 'Siargao'],
+    ]]);
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertSee('current: 1,', false)
+        ->assertSee("(_, index) => JSON.parse('[1,0]').includes(index)", false)
+        ->assertSee('padStart(2, \'0\')">02</span>', false);
+});
+
+test('ourAdventuresCarouselOpensOnTheOldestPhotoWhenNoneIsFeatured', function () {
+    config(['wedding.adventures' => [
+        ['path' => 'robots.txt', 'taken_on' => '2020-01-09', 'caption' => 'Bali'],
+        ['path' => 'favicon.svg', 'taken_on' => '2018-08-05', 'caption' => 'Siargao'],
+    ]]);
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertSee('current: 0,', false)
+        ->assertSee('padStart(2, \'0\')">01</span>', false);
+});
+
 test('ourAdventuresSectionIsHiddenUntilAPhotoIsAdded', function () {
     config(['wedding.adventures' => [
         ['path' => 'images/missing-adventure.jpg', 'taken_on' => '2023-11-24', 'caption' => null],

@@ -5,6 +5,13 @@
     $receptionStartsAt = $wedding->receptionStartsAt();
     $photos = $wedding->photoUrls();
     $adventurePhotos = $wedding->adventurePhotos();
+    $adventureStartIndex = $wedding->featuredAdventureIndex($adventurePhotos);
+    $adventureCount = max(count($adventurePhotos), 1);
+    $preloadedAdventureIndexes = collect(range(-2, 2))
+        ->map(fn (int $step): int => (($adventureStartIndex + $step) % $adventureCount + $adventureCount) % $adventureCount)
+        ->unique()
+        ->values()
+        ->all();
 
     $heroPanels = [
         ['eyebrow' => 'Save the date', 'title' => $ceremonyStartsAt->format('m · d · Y'), 'tone' => 'from-moss-light via-paper to-linen', 'offset' => 'mt-12'],
@@ -137,7 +144,13 @@
 
     <main>
         {{-- Hero --}}
-        <section id="top" class="relative overflow-hidden px-6 pt-28 pb-6 sm:pb-20 lg:flex lg:min-h-svh lg:items-center lg:pt-24">
+        <section id="top" class="relative isolate overflow-hidden px-6 pt-28 pb-6 sm:pb-20 lg:flex lg:min-h-svh lg:items-center lg:pt-24">
+            <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+                <img src="{{ asset('images/hero-sky.jpg') }}" alt="" class="size-full object-cover object-[center_70%]" fetchpriority="high" />
+                <div class="absolute inset-0 bg-ivory/30"></div>
+                <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ivory to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ivory to-transparent sm:h-40"></div>
+            </div>
             <x-wedding.sprig class="pointer-events-none absolute top-16 -left-10 h-[28rem] w-40 -rotate-[28deg] text-moss/15 sm:left-4" />
             <x-wedding.posy class="pointer-events-none absolute top-[55%] left-[38%] hidden w-48 text-moss/10 lg:block" />
             <div class="pointer-events-none absolute -top-40 -left-40 size-[36rem] rounded-full bg-blush/15 blur-3xl"></div>
@@ -380,11 +393,11 @@
 
                 <div
                     x-data="{
-                        current: 0,
+                        current: {{ $adventureStartIndex }},
                         total: {{ count($adventurePhotos) }},
                         startX: null,
                         swiped: false,
-                        loaded: Array.from({ length: {{ count($adventurePhotos) }} }, (_, index) => index <= 2 || index >= {{ count($adventurePhotos) - 2 }}),
+                        loaded: Array.from({ length: {{ count($adventurePhotos) }} }, (_, index) => @js($preloadedAdventureIndexes).includes(index)),
                         offset(index) {
                             let distance = (index - this.current) % this.total;
                             if (distance > this.total / 2) distance -= this.total;
@@ -446,7 +459,7 @@
                         @foreach ($adventurePhotos as $photo)
                             <li
                                 class="absolute inset-0 origin-center transition-[transform,opacity] duration-600 ease-out"
-                                style="{{ $loop->first ? '' : 'opacity: 0;' }}"
+                                style="{{ $loop->index === $adventureStartIndex ? '' : 'opacity: 0;' }}"
                                 :style="slideStyle({{ $loop->index }})"
                                 :class="offset({{ $loop->index }}) !== 0 && 'cursor-pointer'"
                                 :aria-hidden="(offset({{ $loop->index }}) !== 0).toString()"
@@ -459,7 +472,7 @@
                                     :class="offset({{ $loop->index }}) === 0 ? 'shadow-[0_30px_60px_-25px_rgb(51_64_79/0.7)]' : 'shadow-[0_15px_30px_-20px_rgb(51_64_79/0.4)]'"
                                 >
                                     <img
-                                        @if ($loop->index <= 2 || $loop->index >= $loop->count - 2) src="{{ $photo['url'] }}" @endif
+                                        @if (in_array($loop->index, $preloadedAdventureIndexes, true)) src="{{ $photo['url'] }}" @endif
                                         :src="loaded[{{ $loop->index }}] ? @js($photo['url']) : null"
                                         alt="{{ $wedding->coupleNames() }}, {{ $photo['caption'] ? $photo['caption'].', ' : '' }}{{ $photo['taken_on']->format('F Y') }}"
                                         class="pointer-events-none size-full object-cover"
@@ -473,7 +486,7 @@
 
                     <div class="mt-8 grid min-h-12 text-center">
                         @foreach ($adventurePhotos as $photo)
-                            <div class="[grid-area:1/1]" x-show="current === {{ $loop->index }}" @unless ($loop->first) x-cloak @endunless x-transition.opacity.duration.400ms>
+                            <div class="[grid-area:1/1]" x-show="current === {{ $loop->index }}" @unless ($loop->index === $adventureStartIndex) x-cloak @endunless x-transition.opacity.duration.400ms>
                                 <p class="font-sans text-[0.65rem] uppercase tracking-[0.3em] text-blush-dark">{{ $photo['taken_on']->format('F Y') }}</p>
                                 @if ($photo['caption'])
                                     <p class="mt-1 font-display text-xl text-moss-dark">{{ $photo['caption'] }}</p>
@@ -493,7 +506,7 @@
                         </button>
 
                         <p class="min-w-20 text-center font-sans text-xs tabular-nums tracking-[0.25em] text-ink-soft" aria-live="polite">
-                            <span x-text="String(current + 1).padStart(2, '0')">01</span>
+                            <span x-text="String(current + 1).padStart(2, '0')">{{ str_pad((string) ($adventureStartIndex + 1), 2, '0', STR_PAD_LEFT) }}</span>
                             <span class="text-gold">/</span>
                             {{ str_pad((string) count($adventurePhotos), 2, '0', STR_PAD_LEFT) }}
                         </p>

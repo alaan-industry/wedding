@@ -84,7 +84,7 @@ class Wedding
     /**
      * Get the "Our Adventures" photos that exist and have a date, oldest first.
      *
-     * @return list<array{url: string, caption: ?string, taken_on: CarbonImmutable}>
+     * @return list<array{url: string, caption: ?string, taken_on: CarbonImmutable, featured: bool}>
      */
     public function adventurePhotos(): array
     {
@@ -101,12 +101,29 @@ class Wedding
                 'url' => $url,
                 'caption' => $photo['caption'] ?? null,
                 'taken_on' => $this->parse($photo['taken_on']),
+                'featured' => (bool) ($photo['featured'] ?? false),
             ];
         }
 
         usort($photos, fn (array $first, array $second): int => $first['taken_on'] <=> $second['taken_on']);
 
         return $photos;
+    }
+
+    /**
+     * Get the position of the featured "Our Adventures" photo the carousel opens on, or 0 when none is featured.
+     *
+     * @param  list<array{url: string, caption: ?string, taken_on: CarbonImmutable, featured: bool}>  $photos
+     */
+    public function featuredAdventureIndex(array $photos): int
+    {
+        foreach ($photos as $index => $photo) {
+            if ($photo['featured']) {
+                return $index;
+            }
+        }
+
+        return 0;
     }
 
     /**
