@@ -23,6 +23,9 @@
         <meta property="og:title" content="{{ $title }}" />
         <meta property="og:description" content="{{ $description }}" />
         <meta property="og:url" content="{{ url()->current() }}" />
+        @if (filled(config('services.facebook.app_id')))
+            <meta property="fb:app_id" content="{{ config('services.facebook.app_id') }}" />
+        @endif
         @if ($image)
             <meta property="og:image" content="{{ $image['url'] }}" />
             <meta property="og:image:secure_url" content="{{ $image['url'] }}" />

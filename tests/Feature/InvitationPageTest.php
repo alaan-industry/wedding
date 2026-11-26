@@ -123,13 +123,28 @@ test('musicButtonPlaysTheSongOnceItIsAdded', function () {
 });
 
 test('heroShowsOnlyThePhotosThatWereAdded', function () {
-    config(['wedding.photos' => ['robots.txt', 'images/missing-photo.jpg']]);
+    config([
+        'wedding.photos' => ['robots.txt', 'images/missing-photo.jpg'],
+        'wedding.hero_rotations' => [],
+    ]);
 
     $this->get(route('home'))
         ->assertOk()
         ->assertSee('robots.txt', false)
         ->assertDontSee('missing-photo.jpg', false)
         ->assertSee('data-test="photo-placeholder"', false);
+});
+
+test('heroFramesRotateThroughOnlyTheRotationPhotosThatWereAdded', function () {
+    config([
+        'wedding.photos' => ['robots.txt'],
+        'wedding.hero_rotations' => [['images/couple-4.jpg', 'images/missing-rotation.jpg'], [], []],
+    ]);
+
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertSeeInOrder(['src="'.asset('robots.txt').'"', ':src="loaded[0][1] ?', 'couple-4.jpg', 'data-test="photo-placeholder"'], false)
+        ->assertDontSee('missing-rotation.jpg', false);
 });
 
 test('ourAdventuresCarouselShowsOnlyThePhotosThatWereAdded', function () {
@@ -219,11 +234,30 @@ test('calendarDownloadContainsTheCeremonyAndReception', function () {
 
 test('personalInvitationSharesThePreviewPictureWithItsSize', function () {
     $invitation = Invitation::factory()->create();
+    $fingerprint = substr(md5_file(public_path('images/og-image.jpg')), 0, 8);
 
     $this->get(route('invitation.show', $invitation))
         ->assertOk()
-        ->assertSee('<meta property="og:image" content="'.asset('images/og-image.jpg').'" />', false)
+        ->assertSee('<meta property="og:image" content="'.asset('images/og-image.jpg').'?v='.$fingerprint.'" />', false)
         ->assertSee('<meta property="og:image:width" content="1200" />', false)
         ->assertSee('<meta property="og:image:height" content="630" />', false)
         ->assertSee('<meta property="og:image:type" content="image/jpeg" />', false);
+});
+
+test('personalInvitationSharesTheFacebookAppId', function () {
+    config()->set('services.facebook.app_id', '123');
+    $invitation = Invitation::factory()->create();
+
+    $this->get(route('invitation.show', $invitation))
+        ->assertOk()
+        ->assertSee('<meta property="fb:app_id" content="123" />', false);
+});
+
+test('personalInvitationOmitsTheFacebookAppIdWhenNotConfigured', function () {
+    config()->set('services.facebook.app_id', null);
+    $invitation = Invitation::factory()->create();
+
+    $this->get(route('invitation.show', $invitation))
+        ->assertOk()
+        ->assertDontSee('fb:app_id', false);
 });

@@ -194,6 +194,29 @@ select:focus[data-flux-control] {
     animation: music-bar .9s ease-in-out infinite alternate;
 }
 
+.hero-parallax {
+    transition: translate .8s cubic-bezier(.2, .7, .2, 1);
+}
+
+@media (min-width: 64rem) and (hover: hover) {
+    .hero-parallax {
+        translate: calc(var(--mx, 0) * var(--depth, 0) * 1px) calc(var(--my, 0) * var(--depth, 0) * 1px);
+    }
+}
+
+.hero-float {
+    animation: hero-float 8s ease-in-out infinite alternate;
+}
+
+.photo-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 25%, rgb(255 255 255 / .35) 50%, transparent 75%);
+    translate: -100% 0;
+    animation: photo-shine 8s ease-in-out infinite;
+}
+
 .bubble {
     border: 1px solid rgb(255 255 255 / .75);
     background:
@@ -223,6 +246,16 @@ select:focus[data-flux-control] {
 
 .bubble-note {
     animation: bubble-note .5s cubic-bezier(.3, 1.4, .5, 1);
+}
+
+@keyframes hero-float {
+    from { translate: 0 0; }
+    to { translate: 0 -14px; }
+}
+
+@keyframes photo-shine {
+    0% { translate: -100% 0; }
+    15%, 100% { translate: 100% 0; }
 }
 
 @keyframes bubble-wobble {
@@ -289,8 +322,17 @@ select:focus[data-flux-control] {
 
     .side-flower.is-spinning,
     .heart-pop svg,
-    .bubble-note {
+    .bubble-note,
+    .hero-float {
         animation: none;
+    }
+
+    .hero-parallax {
+        translate: none;
+    }
+
+    .photo-shine {
+        display: none;
     }
 }
 

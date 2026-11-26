@@ -82,6 +82,26 @@ class Wedding
     }
 
     /**
+     * Get the photos each of the three hero frames fades through: its own
+     * photo first, then its rotation photos, skipping any not added yet.
+     *
+     * @return list<list<string>>
+     */
+    public function heroPhotoSets(): array
+    {
+        $photos = array_values(config('wedding.photos', []));
+        $rotations = array_values(config('wedding.hero_rotations', []));
+
+        return array_map(
+            fn (int $frame): array => array_values(array_filter(array_map(
+                $this->publicAssetUrl(...),
+                [$photos[$frame] ?? null, ...array_values($rotations[$frame] ?? [])],
+            ))),
+            range(0, 2),
+        );
+    }
+
+    /**
      * Get the "Our Adventures" photos that exist and have a date, oldest first.
      *
      * @return list<array{url: string, caption: ?string, taken_on: CarbonImmutable, featured: bool}>
@@ -130,6 +150,7 @@ class Wedding
      * Get the link preview picture with its size and type, falling back to the first photo, or null when neither exists.
      *
      * Chat apps such as Messenger only show the picture on the first share of a link when its size is given.
+     * The URL carries a fingerprint of the file, because Facebook keeps showing a cached picture until its URL changes.
      *
      * @return array{url: string, width: int, height: int, type: string}|null
      */
@@ -142,6 +163,9 @@ class Wedding
             $size = $url === null ? false : getimagesize(public_path($path));
 
             if ($size !== false) {
+                $hash = md5_file(public_path($path));
+                $url = $hash === false ? $url : $url.'?v='.substr($hash, 0, 8);
+
                 return ['url' => $url, 'width' => $size[0], 'height' => $size[1], 'type' => $size['mime']];
             }
         }

@@ -157,6 +157,37 @@ return [
     ],
 
     /*
+    | Extra photos each of the three hero frames slowly fades through after
+    | its photo above. Portrait photos fit the tall frames best. Photos that
+    | do not exist are skipped.
+    */
+
+    'hero_rotations' => [
+        [
+            'images/adventures/04-2020-01.jpg',
+            'images/adventures/14-2020-09.jpg',
+            'images/adventures/19-2023-11.jpg',
+            'images/adventures/22-2023-11.jpg',
+            'images/adventures/27-2024-12.jpg',
+        ],
+        [
+            'images/adventures/09-2020-01.jpg',
+            'images/adventures/15-2020-09.jpg',
+            'images/adventures/17-2022-12.jpg',
+            'images/adventures/20-2023-11.jpg',
+            'images/adventures/24-2023-11.jpg',
+        ],
+        [
+            'images/adventures/12-2020-01.jpg',
+            'images/adventures/13-2020-09.jpg',
+            'images/adventures/18-2023-11.jpg',
+            'images/adventures/21-2023-11.jpg',
+            'images/adventures/26-2023-11.jpg',
+            'images/adventures/28-2025-03.jpg',
+        ],
+    ],
+
+    /*
     | Photos from our trips together, shown oldest first in the "Our Adventures"
     | carousel. Each needs a path inside the public folder and the date it
     | was taken; the caption (e.g. the place) is optional. Mark one photo

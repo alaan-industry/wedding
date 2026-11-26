@@ -281,6 +281,97 @@ function sideFlowers() {
 }
 
 /**
+ * The three hero photo frames. They take turns fading to their next photo,
+ * and drift with the mouse by different amounts so they feel layered.
+ */
+function heroPhotos(sets = []) {
+    const listeners = new AbortController();
+    let timer = null;
+    let turn = 0;
+    let frameRequested = false;
+
+    return {
+        current: sets.map(() => 0),
+        previous: sets.map(() => null),
+        loaded: sets.map((set) => set.map((_, index) => index < (prefersReducedMotion() ? 1 : 2))),
+        isVisible: false,
+
+        init() {
+            if (prefersReducedMotion()) {
+                return;
+            }
+
+            if (sets.some((set) => set.length > 1)) {
+                timer = setInterval(() => this.advance(), 3500);
+            }
+
+            window.addEventListener('pointermove', (event) => this.follow(event), { passive: true, signal: listeners.signal });
+            document.documentElement.addEventListener('pointerleave', () => this.setOffset(0, 0), { signal: listeners.signal });
+        },
+
+        destroy() {
+            clearInterval(timer);
+            listeners.abort();
+        },
+
+        advance() {
+            if (document.hidden || !this.isVisible) {
+                return;
+            }
+
+            for (let step = 0; step < sets.length; step++) {
+                const frame = (turn + step) % sets.length;
+                const total = sets[frame].length;
+
+                if (total > 1) {
+                    this.previous[frame] = this.current[frame];
+                    this.current[frame] = (this.current[frame] + 1) % total;
+                    this.loaded[frame][(this.current[frame] + 1) % total] = true;
+                    turn = frame + 1;
+
+                    return;
+                }
+            }
+        },
+
+        /**
+         * The photo fading in sits on top, while the one it replaces stays
+         * fully shown underneath so the frame never dims mid-fade.
+         */
+        photoClasses(frame, photo) {
+            const isCurrent = this.current[frame] === photo;
+            const isShown = isCurrent || this.previous[frame] === photo;
+
+            return {
+                'z-10': isCurrent,
+                'scale-100 opacity-100': isShown,
+                'scale-105 opacity-0': !isShown,
+            };
+        },
+
+        follow(event) {
+            if (event.pointerType !== 'mouse' || frameRequested) {
+                return;
+            }
+
+            frameRequested = true;
+            requestAnimationFrame(() => {
+                frameRequested = false;
+                this.setOffset(
+                    (event.clientX / window.innerWidth) * 2 - 1,
+                    (event.clientY / window.innerHeight) * 2 - 1,
+                );
+            });
+        },
+
+        setOffset(x, y) {
+            this.$el.style.setProperty('--mx', x.toFixed(3));
+            this.$el.style.setProperty('--my', y.toFixed(3));
+        },
+    };
+}
+
+/**
  * Background music that starts when the envelope is opened, unless the guest
  * muted it on an earlier visit.
  */
@@ -374,5 +465,6 @@ console.log(
 document.addEventListener('alpine:init', () => {
     window.Alpine.data('bubbles', bubbles);
     window.Alpine.data('sideFlowers', sideFlowers);
+    window.Alpine.data('heroPhotos', heroPhotos);
     window.Alpine.data('music', music);
 });

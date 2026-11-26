@@ -13,10 +13,11 @@
         ->values()
         ->all();
 
+    $heroPhotoSets = $wedding->heroPhotoSets();
     $heroPanels = [
-        ['eyebrow' => 'Save the date', 'title' => $ceremonyStartsAt->format('m · d · Y'), 'tone' => 'from-moss-light via-paper to-linen', 'offset' => 'mt-12'],
-        ['eyebrow' => 'Forever begins', 'title' => $wedding->monogram(), 'tone' => 'from-blush/60 via-paper to-ivory', 'offset' => 'mt-0', 'script' => true],
-        ['eyebrow' => 'Panabo City', 'title' => config('wedding.ceremony.name'), 'tone' => 'from-sage/45 via-paper to-linen', 'offset' => 'mt-20'],
+        ['eyebrow' => 'Save the date', 'title' => $ceremonyStartsAt->format('m · d · Y'), 'tone' => 'from-moss-light via-paper to-linen', 'frame' => 'z-0 mt-16 -mr-3 sm:-mr-4', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 10, 'float' => 'animation-duration: 7s; animation-delay: 0s', 'shine' => '0s'],
+        ['eyebrow' => 'Forever begins', 'title' => $wedding->monogram(), 'tone' => 'from-blush/60 via-paper to-ivory', 'frame' => 'z-20', 'shadow' => 'shadow-[0_35px_60px_-25px_rgb(51_64_79/0.7)]', 'depth' => 24, 'float' => 'animation-duration: 9s; animation-delay: -3s', 'shine' => '2.5s', 'script' => true],
+        ['eyebrow' => 'Panabo City', 'title' => config('wedding.ceremony.name'), 'tone' => 'from-sage/45 via-paper to-linen', 'frame' => 'z-10 mt-28 -ml-4 sm:-ml-5', 'shadow' => 'shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)]', 'depth' => 16, 'float' => 'animation-duration: 8s; animation-delay: -5s', 'shine' => '5s'],
     ];
 @endphp
 
@@ -247,29 +248,47 @@
                     </div>
                 </div>
 
-                <div class="relative grid grid-cols-3 items-start gap-3 sm:gap-4">
+                <div class="relative mx-auto grid w-full max-w-sm grid-cols-[0.85fr_1.2fr_0.95fr] items-start px-2 sm:max-w-lg sm:px-0 lg:max-w-none" x-data="heroPhotos(@js($heroPhotoSets))" x-intersect:enter="isVisible = true" x-intersect:leave="isVisible = false">
                     @foreach ($heroPanels as $index => $panel)
                         <figure
-                            class="reveal photo-frame aspect-[3/5] bg-linen shadow-[0_25px_50px_-30px_rgb(51_64_79/0.6)] {{ $panel['offset'] }}"
+                            class="reveal relative {{ $panel['frame'] }}"
                             style="transition-delay: {{ 150 + $index * 150 }}ms"
                             x-data
                             x-intersect.once="$el.classList.add('is-visible')"
                         >
-                            @if ($photos[$index] ?? null)
-                                <img src="{{ $photos[$index] }}" alt="{{ $wedding->coupleNames() }}" class="size-full object-cover" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" />
-                            @else
-                                <div class="flex size-full flex-col items-center justify-center bg-gradient-to-b px-3 text-center sm:px-4 {{ $panel['tone'] }}" data-test="photo-placeholder">
-                                    <x-wedding.sprig class="h-14 w-5 text-moss/40 sm:h-32 sm:w-12" filled />
-                                    <span class="mt-2 font-sans text-[0.5rem] uppercase tracking-[0.2em] text-blush-dark sm:mt-4 sm:text-[0.55rem] sm:tracking-[0.3em]">{{ $panel['eyebrow'] }}</span>
-                                    <span class="mt-1 sm:mt-2 {{ ($panel['script'] ?? false) ? 'font-script text-xl whitespace-nowrap sm:text-4xl' : 'font-display text-[0.7rem] sm:text-lg' }} leading-tight text-moss-dark">{{ $panel['title'] }}</span>
+                            <div class="hero-parallax" style="--depth: {{ $panel['depth'] }}">
+                                <div class="hero-float photo-frame aspect-[3/5] bg-linen transition-transform duration-700 motion-safe:hover:scale-[1.03] {{ $panel['shadow'] }}" style="{{ $panel['float'] }}">
+                                    @if ($heroPhotoSets[$index] !== [])
+                                        <div class="absolute inset-0 isolate">
+                                            @foreach ($heroPhotoSets[$index] as $photoIndex => $photoUrl)
+                                                <img
+                                                    @if ($photoIndex === 0) src="{{ $photoUrl }}" @endif
+                                                    :src="loaded[{{ $index }}][{{ $photoIndex }}] ? @js($photoUrl) : null"
+                                                    alt="{{ $wedding->coupleNames() }}"
+                                                    class="absolute inset-0 size-full object-cover transition duration-[1800ms] ease-out {{ $photoIndex === 0 ? 'scale-100 opacity-100' : 'scale-105 opacity-0' }}"
+                                                    :class="photoClasses({{ $index }}, {{ $photoIndex }})"
+                                                    @if ($photoIndex > 0) aria-hidden="true" @endif
+                                                    :aria-hidden="(current[{{ $index }}] !== {{ $photoIndex }}).toString()"
+                                                    loading="{{ $index === 0 && $photoIndex === 0 ? 'eager' : 'lazy' }}"
+                                                />
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="flex size-full flex-col items-center justify-center bg-gradient-to-b px-3 text-center sm:px-4 {{ $panel['tone'] }}" data-test="photo-placeholder">
+                                            <x-wedding.sprig class="h-14 w-5 text-moss/40 sm:h-32 sm:w-12" filled />
+                                            <span class="mt-2 font-sans text-[0.5rem] uppercase tracking-[0.2em] text-blush-dark sm:mt-4 sm:text-[0.55rem] sm:tracking-[0.3em]">{{ $panel['eyebrow'] }}</span>
+                                            <span class="mt-1 sm:mt-2 {{ ($panel['script'] ?? false) ? 'font-script text-xl whitespace-nowrap sm:text-4xl' : 'font-display text-[0.7rem] sm:text-lg' }} leading-tight text-moss-dark">{{ $panel['title'] }}</span>
+                                        </div>
+                                    @endif
+                                    <span class="photo-shine" style="animation-delay: {{ $panel['shine'] }}" aria-hidden="true"></span>
                                 </div>
-                            @endif
+                            </div>
                         </figure>
                     @endforeach
 
-                    <x-wedding.posy class="pointer-events-none absolute top-6 -left-6 w-20 text-blush-dark/80 sm:w-28" />
-                    <x-wedding.sprig class="pointer-events-none absolute -right-2 bottom-10 h-28 w-10 rotate-[200deg] text-moss/70 sm:h-36 sm:w-14" />
-                    <x-wedding.posy class="pointer-events-none absolute top-[80%] left-[28%] w-16 -scale-x-100 text-gold sm:w-24" />
+                    <x-wedding.posy class="pointer-events-none absolute top-6 -left-6 z-30 w-20 text-blush-dark/80 sm:w-28" />
+                    <x-wedding.sprig class="pointer-events-none absolute -right-2 bottom-10 z-30 h-28 w-10 rotate-[200deg] text-moss/70 sm:h-36 sm:w-14" />
+                    <x-wedding.posy class="pointer-events-none absolute top-[80%] left-[28%] z-30 w-16 -scale-x-100 text-gold sm:w-24" />
                 </div>
             </div>
         </section>
