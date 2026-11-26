@@ -22,7 +22,9 @@
 
 <x-layouts::invitation
     :title="$wedding->coupleNames().' — '.$ceremonyStartsAt->format('F j, Y')"
-    :image="$wedding->ogImageUrl()"
+    :image="$wedding->ogImage()"
+    :image-alt="$wedding->coupleNames().' — '.$ceremonyStartsAt->format('F j, Y')"
+    :site-name="$wedding->coupleNames()"
     :description="'Together with our families, we invite you to celebrate the best day of our lives on '.$ceremonyStartsAt->format('l, F j, Y').' at '.config('wedding.ceremony.name').', Panabo City.'"
 >
     {{-- Sealed envelope intro --}}
