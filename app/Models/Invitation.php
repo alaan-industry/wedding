@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\RsvpStatus;
+use App\Jobs\RefreshInvitationLinkPreview;
+use App\Support\FacebookLinkPreview;
 use Database\Factories\InvitationFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -68,6 +70,12 @@ class Invitation extends Model
     {
         static::creating(function (Invitation $invitation): void {
             $invitation->code ??= static::generateUniqueCode();
+        });
+
+        static::created(function (Invitation $invitation): void {
+            if (app(FacebookLinkPreview::class)->isConfigured()) {
+                RefreshInvitationLinkPreview::dispatch($invitation)->afterResponse();
+            }
         });
     }
 
